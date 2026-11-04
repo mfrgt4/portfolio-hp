@@ -92,8 +92,8 @@ export default function PortfolioEntrance({
 
     media.add("(min-width: 901px)", () => {
       gsap.set([leftDoor, rightDoor], {
+        xPercent: 0,
         rotationY: 0,
-        z: 0,
         force3D: true,
       });
 
@@ -127,24 +127,22 @@ export default function PortfolioEntrance({
         0,
       );
 
-      // Le battant gauche pivote sur ses gonds extérieurs
+      // La porte gauche coulisse vers la gauche
       intro.to(
         leftDoor,
         {
-          rotationY: -105,
-          z: -35,
+          xPercent: -105,
           duration: 1,
           ease: "power2.inOut",
         },
         0.15,
       );
 
-      // Le battant droit pivote dans le sens opposé
+      // La porte droite coulisse vers la droite
       intro.to(
         rightDoor,
         {
-          rotationY: 105,
-          z: -35,
+          xPercent: 105,
           duration: 1,
           ease: "power2.inOut",
         },
@@ -162,11 +160,7 @@ export default function PortfolioEntrance({
   }, []);
 
   return (
-    <section
-      className="ip"
-      ref={rootRef}
-      aria-label="Entrée du portfolio"
-    >
+    <section className="ip" ref={rootRef} aria-label="Entrée du portfolio">
       <div className="ip-wall" />
 
       <div className="ip-content">{children}</div>
