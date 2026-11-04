@@ -252,9 +252,9 @@ export default function PortfolioEntrance({
             </p>
 
             <h1>
-              Bienvenue dans
+              Une surprise
               <br />
-              <em>mon univers…</em>
+              <em>vous attend…</em>
             </h1>
 
             <div className="ip-title-divider">
@@ -265,7 +265,7 @@ export default function PortfolioEntrance({
 
             <p className="ip-scroll-hint">
               <span>
-                Faites défiler pour découvrir mon portfolio
+                Faites défiler pour ouvrir les portes
               </span>
               <i>↓</i>
             </p>
