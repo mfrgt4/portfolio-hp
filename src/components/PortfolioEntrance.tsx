@@ -1,5 +1,4 @@
-
-import { useEffect, useRef, type ReactNode, type RefObject } from "react";
+import { useEffect, useRef, type ReactNode, type Ref } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./PortfolioEntrance.css";
@@ -11,7 +10,7 @@ function DoorPanel({
   doorRef,
 }: {
   side: "left" | "right";
-  doorRef: RefObject<HTMLDivElement | null>;
+  doorRef: Ref<HTMLDivElement>;
 }) {
   return (
     <div ref={doorRef} className={`ip-door ip-door--${side}`}>
