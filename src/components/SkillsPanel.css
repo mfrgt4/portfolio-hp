@@ -1,0 +1,531 @@
+.skills-panel {
+  --skills-text: #29232d;
+  --skills-muted: #706775;
+  --skills-surface: #fffdfd;
+  --skills-border: rgba(23,23,23,.12);
+
+  margin-top: 2.5rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid rgba(231, 97, 170, 0.3);
+  border-radius: 22px;
+  background: var(--skills-surface);
+  color: var(--skills-text);
+}
+
+.skills-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.skills-panel-kicker {
+  color: #d13686;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+}
+
+.skills-panel-heading h3 {
+  margin: 0.6rem 0 0;
+  color: var(--skills-text);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  letter-spacing: -0.045em;
+}
+
+.skills-panel-count {
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(209, 54, 134, 0.3);
+  border-radius: 7px;
+  color: var(--skills-muted);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+/* =========================================
+   GRILLE DES DOMAINES
+========================================= */
+
+.skills-domains {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.skills-domain {
+  --skill-color: #e761aa;
+
+  position: relative;
+  min-width: 0;
+  padding: 1.15rem;
+  overflow: hidden;
+  border: 1px solid color-mix(
+    in srgb,
+    var(--skill-color) 35%,
+    #ffffff
+  );
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.78);
+
+  opacity: 0;
+  transform: translateY(24px);
+
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.28s ease,
+    background 0.28s ease,
+    box-shadow 0.28s ease;
+
+  will-change: opacity, transform;
+}
+
+/* Barre colorée en haut de la carte */
+
+.skills-domain::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1.15rem;
+  width: 2rem;
+  height: 2px;
+  border-radius: 10px;
+  background: var(--skill-color);
+  opacity: 0.85;
+  transition: width 0.3s ease;
+}
+
+/* Apparition progressive */
+
+.skills-domain.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(var(--i, 0) * 100ms);
+}
+
+.skills-domain.is-settled {
+  transition-delay: 0ms;
+}
+
+/* Survol simple : aucun tilt X/Y */
+
+.skills-domain:hover {
+  transform: translateY(-4px);
+  border-color: var(--skill-color);
+  background: color-mix(
+    in srgb,
+    var(--skill-color) 7%,
+    #ffffff
+  );
+  box-shadow: 0 12px 32px color-mix(
+    in srgb,
+    var(--skill-color) 13%,
+    transparent
+  );
+}
+
+.skills-domain:hover::before {
+  width: calc(100% - 2.3rem);
+}
+
+/* =========================================
+   EN-TÊTE DES CARTES
+========================================= */
+
+.skills-domain-header {
+  display: grid;
+  grid-template-columns: auto 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.15rem;
+}
+
+.skills-domain-number {
+  align-self: start;
+  padding-top: 0.2rem;
+  color: var(--skill-color);
+  font-size: 0.65rem;
+}
+
+.skills-domain-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid color-mix(
+    in srgb,
+    var(--skill-color) 40%,
+    #ffffff
+  );
+  border-radius: 11px;
+  background: color-mix(
+    in srgb,
+    var(--skill-color) 12%,
+    #ffffff
+  );
+  transition: transform 0.3s ease;
+}
+
+.skills-domain:hover .skills-domain-icon {
+  transform: rotate(-7deg) scale(1.08);
+}
+
+.skills-domain-icon img {
+  width: 23px;
+  height: 23px;
+  object-fit: contain;
+}
+
+.skills-domain-title {
+  min-width: 0;
+}
+
+.skills-domain-title h4 {
+  margin: 0;
+  color: var(--skills-text);
+  font-size: 0.94rem;
+  line-height: 1.4;
+}
+
+.skills-domain-title p {
+  margin: 0.25rem 0 0;
+  color: var(--skills-muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.skills-domain-arrow {
+  color: var(--skill-color);
+  font-size: 1rem;
+  opacity: 0.65;
+  transform: translate(-2px, 2px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.skills-domain:hover .skills-domain-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* =========================================
+   TAGS DES COMPÉTENCES
+========================================= */
+
+.skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.skills-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.43rem 0.6rem;
+  border: 1px solid rgba(65, 45, 65, 0.14);
+  border-radius: 7px;
+  color: #625967;
+  background: #ffffff;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s ease;
+
+  transition-delay: 0ms;
+}
+
+.skills-tag-dot {
+  flex: 0 0 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--skill-color);
+  opacity: 0.85;
+  transition:
+    opacity 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.skills-domain:hover .skills-tag {
+  border-color: color-mix(
+    in srgb,
+    var(--skill-color) 45%,
+    #ffffff
+  );
+  color: #29232d;
+  background: color-mix(
+    in srgb,
+    var(--skill-color) 10%,
+    #ffffff
+  );
+  transform: translateY(-1px);
+  transition-delay: calc(var(--tag-index, 0) * 25ms);
+}
+
+.skills-domain:hover .skills-tag-dot {
+  opacity: 1;
+  box-shadow: 0 0 8px var(--skill-color);
+}
+
+/* =========================================
+   PIED DU PANNEAU
+========================================= */
+
+.skills-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1.5rem 0 0;
+  color: var(--skills-muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+
+.skills-footer-dot {
+  flex: 0 0 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #78976a;
+  box-shadow: 0 0 9px rgba(120, 151, 106, 0.4);
+}
+
+/* =========================================
+   MODE CLAIR
+========================================= */
+
+[data-theme="light"] .skills-panel {
+  --skills-text: #29232d;
+  --skills-muted: #706775;
+  --skills-surface: #fffdfd;
+  --skills-border: rgba(65, 45, 65, 0.14);
+
+  color: var(--skills-text);
+  background: #fffdfd;
+}
+
+[data-theme="light"] .skills-panel-heading h3,
+[data-theme="light"] .skills-domain-title h4 {
+  color: #29232d;
+}
+
+[data-theme="light"] .skills-domain-title p,
+[data-theme="light"] .skills-panel-footer {
+  color: #706775;
+}
+
+[data-theme="light"] .skills-domain {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="light"] .skills-domain:hover {
+  background: color-mix(
+    in srgb,
+    var(--skill-color) 7%,
+    #ffffff
+  );
+}
+
+[data-theme="light"] .skills-tag {
+  color: #625967;
+  background: #ffffff;
+  border-color: rgba(65, 45, 65, 0.14);
+}
+
+[data-theme="light"] .skills-panel-count {
+  color: #706775;
+  background: #ffffff;
+}
+
+/* =========================================
+   MODE SOMBRE
+========================================= */
+
+[data-theme="dark"] .skills-panel {
+  --skills-text: #f5f0f6;
+  --skills-muted: #c1b6c8;
+  --skills-surface: #17131d;
+  --skills-border: rgba(255, 255, 255, 0.1);
+
+  color: var(--skills-text);
+  background: #17131d;
+  border-color: rgba(231, 97, 170, 0.24);
+}
+
+[data-theme="dark"] .skills-panel-heading h3,
+[data-theme="dark"] .skills-domain-title h4 {
+  color: #f5f0f6;
+}
+
+[data-theme="dark"] .skills-domain-title p,
+[data-theme="dark"] .skills-panel-footer {
+  color: #c1b6c8;
+}
+
+[data-theme="dark"] .skills-domain {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: color-mix(
+    in srgb,
+    var(--skill-color) 28%,
+    transparent
+  );
+}
+
+[data-theme="dark"] .skills-domain:hover {
+  background: color-mix(
+    in srgb,
+    var(--skill-color) 12%,
+    #17131d
+  );
+  border-color: var(--skill-color);
+}
+
+[data-theme="dark"] .skills-tag {
+  color: #d2c8d8;
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .skills-domain:hover .skills-tag {
+  color: #ffffff;
+  background: color-mix(
+    in srgb,
+    var(--skill-color) 17%,
+    #17131d
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--skill-color) 55%,
+    transparent
+  );
+}
+
+[data-theme="dark"] .skills-panel-count {
+  color: #c1b6c8;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(231, 97, 170, 0.28);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 650px) {
+  .skills-panel {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 17px;
+  }
+
+  .skills-panel-heading {
+    align-items: flex-start;
+  }
+
+  .skills-panel-heading h3 {
+    font-size: 1.4rem;
+  }
+
+  .skills-panel-count {
+    margin-top: 0.15rem;
+    font-size: 0.55rem;
+  }
+
+  .skills-domains {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .skills-domain {
+    padding: 1rem;
+  }
+
+  .skills-domain-header {
+    grid-template-columns: auto 34px minmax(0, 1fr) auto;
+    gap: 0.6rem;
+  }
+
+  .skills-domain-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .skills-domain-icon img {
+    width: 21px;
+    height: 21px;
+  }
+
+  .skills-domain-title h4 {
+    font-size: 0.9rem;
+  }
+
+  .skills-domain-title p {
+    font-size: 0.73rem;
+  }
+
+  .skills-tag {
+    font-size: 0.7rem;
+  }
+
+  .skills-panel-footer {
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* =========================================
+   ÉCRANS TACTILES
+========================================= */
+
+@media (hover: none) {
+  .skills-domain:active {
+    border-color: var(--skill-color);
+    background: color-mix(
+      in srgb,
+      var(--skill-color) 9%,
+      #ffffff
+    );
+  }
+}
+
+/* =========================================
+   ACCESSIBILITÉ
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .skills-domain,
+  .skills-domain::before,
+  .skills-domain-icon,
+  .skills-domain-arrow,
+  .skills-tag,
+  .skills-tag-dot {
+    transition: none;
+  }
+
+  .skills-domain,
+  .skills-domain.is-in,
+  .skills-domain.is-settled {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0ms;
+    will-change: auto;
+  }
+
+  .skills-domain:hover,
+  .skills-domain:hover .skills-domain-icon,
+  .skills-domain:hover .skills-domain-arrow,
+  .skills-domain:hover .skills-tag {
+    transform: none;
+  }
+}
