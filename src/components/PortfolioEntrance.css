@@ -2,12 +2,22 @@
    INTRO — PORTES MASSIVES DE POUDLARD
    ========================================= */
 
-/* Wrapper plein écran : la marge négative est ici, PAS sur l'élément épinglé */
+/* Wrapper plein écran : largeur/décalage calculés en JS (voir le .tsx) */
 .ip-bleed {
   position: relative;
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
+}
+
+/* Piste de scroll : remplace le pin GSAP (sticky, sans pin-spacer) */
+.ip-track {
+  position: relative;
+  width: 100%;
+}
+
+@media (min-width: 901px) {
+  .ip-track {
+    height: calc(100svh + 1400px);
+  }
 }
 
 .ip {
@@ -19,7 +29,8 @@
   --ip-gold-light: #d0ad70;
   --ip-parchment: #f0e7d5;
 
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100%;
   height: 100vh;
   height: 100svh;
@@ -819,14 +830,6 @@
 /* =========================================
    MOBILE — PAS D'INTRODUCTION
    ========================================= */
-
-@media (max-width: 900px) {
-  .ip-bleed {
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-  }
-}
 
 @media (max-width: 560px) {
   .ip {

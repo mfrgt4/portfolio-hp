@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode, type Ref } from "react";
+import { useEffect, useLayoutEffect, useRef, type ReactNode, type Ref } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./PortfolioEntrance.css";
@@ -75,18 +75,49 @@ type PortfolioEntranceProps = {
 export default function PortfolioEntrance({
   children,
 }: PortfolioEntranceProps) {
+  const bleedRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLElement>(null);
   const leftDoorRef = useRef<HTMLDivElement>(null);
   const rightDoorRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
 
+  // Plein écran réel : quel que soit le parent (centré, décalé, max-width...)
+  useLayoutEffect(() => {
+    const el = bleedRef.current;
+    if (!el) return;
+
+    const fit = () => {
+      el.style.marginLeft = "0px";
+      el.style.width = "";
+      if (window.innerWidth <= 900) return;
+      const left = el.getBoundingClientRect().left;
+      el.style.marginLeft = `${-left}px`;
+      el.style.width = `${document.documentElement.clientWidth}px`;
+    };
+
+    fit();
+    window.addEventListener("resize", fit);
+    const ro = new ResizeObserver(() => {
+      fit();
+      ScrollTrigger.refresh();
+    });
+    if (el.parentElement) ro.observe(el.parentElement);
+
+    return () => {
+      window.removeEventListener("resize", fit);
+      ro.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     const root = rootRef.current;
+    const track = trackRef.current;
     const leftDoor = leftDoorRef.current;
     const rightDoor = rightDoorRef.current;
     const title = titleRef.current;
 
-    if (!root || !leftDoor || !rightDoor || !title) return;
+    if (!root || !track || !leftDoor || !rightDoor || !title) return;
 
     const media = gsap.matchMedia();
 
@@ -104,13 +135,10 @@ export default function PortfolioEntrance({
 
       const intro = gsap.timeline({
         scrollTrigger: {
-          trigger: root,
+          trigger: track,
           start: "top top",
-          end: "+=1400",
+          end: "bottom bottom",
           scrub: 0.5,
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
@@ -160,7 +188,8 @@ export default function PortfolioEntrance({
   }, []);
 
   return (
-    <div className="ip-bleed">
+    <div className="ip-bleed" ref={bleedRef}>
+      <div className="ip-track" ref={trackRef}>
     <section className="ip" ref={rootRef} aria-label="Entrée du portfolio">
       <div className="ip-wall" />
 
@@ -206,6 +235,7 @@ export default function PortfolioEntrance({
         </p>
       </div>
     </section>
+      </div>
     </div>
   );
 }
