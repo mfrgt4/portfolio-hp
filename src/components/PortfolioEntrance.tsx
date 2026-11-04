@@ -6,28 +6,58 @@ import "./PortfolioEntrance.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function LockerDetails() {
+function DoorOrnaments({ side }: { side: "left" | "right" }) {
   return (
     <>
-      <div className="ip-vents ip-vents--top">
-        <i />
-        <i />
+      <div className="ip-door-frame">
+        <div className="ip-frame-inner" />
+      </div>
+
+      <div className="ip-wood-panel ip-wood-panel--top">
+        <div className="ip-panel-border">
+          <span className="ip-carving ip-carving--top">✦</span>
+          <span className="ip-carving ip-carving--left">❧</span>
+          <span className="ip-carving ip-carving--right">❧</span>
+        </div>
+      </div>
+
+      <div className="ip-wood-panel ip-wood-panel--middle">
+        <div className="ip-panel-border">
+          <div className="ip-panel-medallion">
+            <span className="ip-medallion-star">✦</span>
+            <span className="ip-medallion-line" />
+            <span className="ip-medallion-text">
+              {side === "left" ? "M" : "F"}
+            </span>
+            <span className="ip-medallion-line" />
+            <span className="ip-medallion-star">✦</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="ip-wood-panel ip-wood-panel--bottom">
+        <div className="ip-panel-border">
+          <span className="ip-bottom-ornament">❧ ✧ ❧</span>
+        </div>
+      </div>
+
+      <div className="ip-door-rivets ip-door-rivets--top">
         <i />
         <i />
       </div>
 
-      <div className="ip-nameplate" />
-
-      <div className="ip-lock-plate">
-        <span className="ip-lock-hole" />
-      </div>
-
-      <div className="ip-handle">
-        <span />
-      </div>
-
-      <div className="ip-vents ip-vents--bottom">
+      <div className="ip-door-rivets ip-door-rivets--bottom">
         <i />
+        <i />
+      </div>
+
+      <div className="ip-door-handle">
+        <span className="ip-handle-backplate" />
+        <span className="ip-handle-ring" />
+        <span className="ip-handle-drop" />
+      </div>
+
+      <div className="ip-door-hinges">
         <i />
         <i />
         <i />
@@ -36,53 +66,7 @@ function LockerDetails() {
   );
 }
 
-function LockerStickers({ side }: { side: "left" | "right" }) {
-  return (
-    <>
-      {side === "left" && (
-        <>
-          <div className="ip-sticker ip-sticker--one">
-            <img src="https://i.pinimg.com/originals/95/4c/54/954c54617d68eba31d77adfa90404ef8.gif" alt="Sticker animé" />
-          </div>
-          <div className="ip-sticker ip-sticker--two">
-            <img src="https://i.pinimg.com/originals/dd/56/bb/dd56bbfeaf64ac8e20feaa65ee898bf0.gif" alt="Sticker animé" />
-          </div>
-          <div className="ip-sticker ip-sticker--four">
-            <img src="https://i.pinimg.com/originals/93/2f/2c/932f2cf0bc5b42adae73a65f27e0b558.gif" alt="Sticker animé" />
-          </div>
-          <div className="ip-sticker ip-sticker--five">
-            <img src="https://i.pinimg.com/originals/7b/d9/bd/7bd9bd5836aa0d5bdb1964950108af18.gif" alt="Sticker animé" />
-          </div>
-          <div className="ip-sticker ip-sticker--eight">
-            <img src="https://i.pinimg.com/originals/7e/78/17/7e78170337ed44d06823302a491a56b3.gif" alt="Sticker animé" />
-          </div>
-        </>
-      )}
-
-      {side === "right" && (
-        <>
-          <div className="ip-sticker ip-sticker--three">
-            <img src="https://i.pinimg.com/originals/72/bc/ac/72bcac56b668c5c898f0117783f6f8c6.gif" alt="Sticker animé" />
-          </div>
-          <div className="ip-sticker ip-sticker--six">
-            <img src="https://i.pinimg.com/originals/e1/5a/15/e15a1569934cb0898a57210b32c9488f.gif" alt="Sticker animé" />
-          </div>
-          <div className="ip-sticker ip-sticker--seven">
-            <img src="https://i.pinimg.com/originals/3e/d5/00/3ed5009c487c654a0001a97c8d9b381c.gif" alt="Sticker animé" />
-          </div>
-          <div className="ip-sticker ip-sticker--nine">
-            <img src="https://i.pinimg.com/originals/ee/3b/5c/ee3b5c19db3c7a9dacc5e04d9a885fa2.gif" alt="Sticker animé" />
-          </div>
-          <div className="ip-sticker ip-sticker--ten">
-            <img src="https://i.pinimg.com/originals/0e/f6/51/0ef65153115ac5f17c5b577e2d694db0.gif" alt="Sticker animé" />
-          </div>
-        </>
-      )}
-    </>
-  );
-}
-
-function LockerDoor({
+function DoorPanel({
   side,
   doorRef,
 }: {
@@ -91,21 +75,9 @@ function LockerDoor({
 }) {
   return (
     <div ref={doorRef} className={`ip-door ip-door--${side}`}>
-      {[1, 2, 3].map((locker) => (
-        <div className="ip-door-locker" key={locker}>
-          <LockerDetails />
-        </div>
-      ))}
-
-      <LockerStickers side={side} />
-
+      <div className="ip-door-planks" />
+      <DoorOrnaments side={side} />
       <div className="ip-door-edge" />
-
-      <div className="ip-hinges">
-        <i />
-        <i />
-        <i />
-      </div>
     </div>
   );
 }
@@ -135,6 +107,7 @@ export default function PortfolioEntrance({
     media.add("(min-width: 901px)", () => {
       gsap.set([leftDoor, rightDoor], {
         x: 0,
+        xPercent: 0,
         rotationY: 0,
         force3D: true,
       });
@@ -169,7 +142,7 @@ export default function PortfolioEntrance({
         0,
       );
 
-      // Le panneau gauche coulisse vers la gauche
+      // La porte gauche s'ouvre vers la gauche
       intro.to(
         leftDoor,
         {
@@ -180,7 +153,7 @@ export default function PortfolioEntrance({
         0.15,
       );
 
-      // Le panneau droit coulisse vers la droite
+      // La porte droite s'ouvre vers la droite
       intro.to(
         rightDoor,
         {
@@ -216,16 +189,39 @@ export default function PortfolioEntrance({
       <div className="ip-content">{children}</div>
 
       <div className="ip-stage">
-        <LockerDoor side="left" doorRef={leftDoorRef} />
-        <LockerDoor side="right" doorRef={rightDoorRef} />
+        <DoorPanel side="left" doorRef={leftDoorRef} />
+        <DoorPanel side="right" doorRef={rightDoorRef} />
       </div>
 
       <div className="ip-title" ref={titleRef}>
-        <span>Bienvenue dans</span>
-        <h1>Mon Portfolio</h1>
+        <div className="ip-title-eyebrow">
+          <span />
+          COURRIER DE POUDLARD
+          <span />
+        </div>
+
+        <div className="ip-title-seal">
+          <span>✦</span>
+          <span className="ip-seal-letter">H</span>
+          <span>✦</span>
+        </div>
+
+        <p className="ip-title-intro">Une surprise vous attend...</p>
+
+        <h1>
+          Votre lettre
+          <br />
+          <em>est arrivée…</em>
+        </h1>
+
+        <div className="ip-title-divider">
+          <span />
+          <i>✦</i>
+          <span />
+        </div>
 
         <p className="ip-scroll-hint">
-          <span>Faites défiler pour ouvrir</span>
+          <span>Faites défiler pour ouvrir les portes</span>
           <i>↓</i>
         </p>
       </div>
