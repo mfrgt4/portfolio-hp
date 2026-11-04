@@ -2,10 +2,11 @@
    INTRO — PORTES MASSIVES DE POUDLARD
    ========================================= */
 
-/* Wrapper plein écran : largeur/décalage calculés en JS (voir le .tsx) */
+/* Wrapper : simplement 100% du parent (qui est déjà pleine largeur) */
 .ip-bleed {
   position: relative;
   width: 100%;
+  margin: 0;
 }
 
 /* Piste de scroll : remplace le pin GSAP (sticky, sans pin-spacer) */
