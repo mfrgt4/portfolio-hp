@@ -1,4 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, type ReactNode, type Ref } from "react";
+
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  type ReactNode,
+  type Ref,
+} from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./PortfolioEntrance.css";
@@ -82,7 +89,8 @@ export default function PortfolioEntrance({
   const rightDoorRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
 
-  // Plein écran réel : quel que soit le parent (centré, décalé, max-width...)
+  // Plein écran réel : quel que soit le parent
+  // (centré, décalé, max-width...)
   useLayoutEffect(() => {
     const el = bleedRef.current;
     if (!el) return;
@@ -90,18 +98,23 @@ export default function PortfolioEntrance({
     const fit = () => {
       el.style.marginLeft = "0px";
       el.style.width = "";
+
       if (window.innerWidth <= 900) return;
+
       const left = el.getBoundingClientRect().left;
       el.style.marginLeft = `${-left}px`;
       el.style.width = `${document.documentElement.clientWidth}px`;
     };
 
     fit();
+
     window.addEventListener("resize", fit);
+
     const ro = new ResizeObserver(() => {
       fit();
       ScrollTrigger.refresh();
     });
+
     if (el.parentElement) ro.observe(el.parentElement);
 
     return () => {
@@ -144,6 +157,7 @@ export default function PortfolioEntrance({
         },
       });
 
+      // Disparition du texte
       intro.to(
         title,
         {
@@ -160,7 +174,11 @@ export default function PortfolioEntrance({
       if (seam) {
         intro.to(
           seam,
-          { autoAlpha: 0, duration: 0.1, ease: "none" },
+          {
+            autoAlpha: 0,
+            duration: 0.1,
+            ease: "none",
+          },
           0.15,
         );
       }
@@ -200,51 +218,59 @@ export default function PortfolioEntrance({
   return (
     <div className="ip-bleed" ref={bleedRef}>
       <div className="ip-track" ref={trackRef}>
-    <section className="ip" ref={rootRef} aria-label="Entrée du portfolio">
-      <div className="ip-wall" />
+        <section
+          className="ip"
+          ref={rootRef}
+          aria-label="Introduction au portfolio"
+        >
+          <div className="ip-wall" />
 
-      <div className="ip-content">{children}</div>
+          <div className="ip-content">{children}</div>
 
-      <div className="ip-stage">
-        <div className="ip-hall-light" />
+          <div className="ip-stage">
+            <div className="ip-hall-light" />
 
-        <DoorPanel side="left" doorRef={leftDoorRef} />
-        <DoorPanel side="right" doorRef={rightDoorRef} />
+            <DoorPanel side="left" doorRef={leftDoorRef} />
+            <DoorPanel side="right" doorRef={rightDoorRef} />
 
-        <div className="ip-center-seam" />
-      </div>
+            <div className="ip-center-seam" />
+          </div>
 
-      <div className="ip-title" ref={titleRef}>
-        <div className="ip-title-eyebrow">
-          <span />
-          COURRIER DE POUDLARD
-          <span />
-        </div>
+          <div className="ip-title" ref={titleRef}>
+            <div className="ip-title-eyebrow">
+              <span />
+              PORTFOLIO — ÉDITION POUDLARD
+              <span />
+            </div>
 
-        <div className="ip-title-seal">
-          <span className="ip-seal-letter">H</span>
-        </div>
+            <div className="ip-title-seal">
+              <span className="ip-seal-letter">M</span>
+            </div>
 
-        <p className="ip-title-intro">Une surprise vous attend...</p>
+            <p className="ip-title-intro">
+              Une invitation à découvrir mon univers créatif…
+            </p>
 
-        <h1>
-          Votre lettre
-          <br />
-          <em>est arrivée…</em>
-        </h1>
+            <h1>
+              Bienvenue dans
+              <br />
+              <em>mon univers…</em>
+            </h1>
 
-        <div className="ip-title-divider">
-          <span />
-          <i>✦</i>
-          <span />
-        </div>
+            <div className="ip-title-divider">
+              <span />
+              <i>✦</i>
+              <span />
+            </div>
 
-        <p className="ip-scroll-hint">
-          <span>Faites défiler pour ouvrir les portes</span>
-          <i>↓</i>
-        </p>
-      </div>
-    </section>
+            <p className="ip-scroll-hint">
+              <span>
+                Faites défiler pour découvrir mon portfolio
+              </span>
+              <i>↓</i>
+            </p>
+          </div>
+        </section>
       </div>
     </div>
   );
