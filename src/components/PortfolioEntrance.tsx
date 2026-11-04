@@ -1,60 +1,61 @@
 
-import { useEffect, useRef, type ReactNode, type Ref } from "react";
+import { useEffect, useRef, type ReactNode, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./PortfolioEntrance.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function DoorOrnaments({ side }: { side: "left" | "right" }) {
+function DoorPanel({
+  side,
+  doorRef,
+}: {
+  side: "left" | "right";
+  doorRef: RefObject<HTMLDivElement | null>;
+}) {
   return (
-    <>
-      <div className="ip-door-frame">
-        <div className="ip-frame-inner" />
-      </div>
+    <div ref={doorRef} className={`ip-door ip-door--${side}`}>
+      <div className="ip-door-wood" />
+      <div className="ip-door-grain" />
 
-      <div className="ip-wood-panel ip-wood-panel--top">
-        <div className="ip-panel-border">
-          <span className="ip-carving ip-carving--top">✦</span>
-          <span className="ip-carving ip-carving--left">❧</span>
-          <span className="ip-carving ip-carving--right">❧</span>
+      <div className="ip-door-structure">
+        <div className="ip-door-rail ip-door-rail--top" />
+        <div className="ip-door-rail ip-door-rail--middle" />
+        <div className="ip-door-rail ip-door-rail--bottom" />
+
+        <div className="ip-door-panel ip-door-panel--top">
+          <div className="ip-panel-inset" />
+          <div className="ip-panel-highlight" />
         </div>
-      </div>
 
-      <div className="ip-wood-panel ip-wood-panel--middle">
-        <div className="ip-panel-border">
-          <div className="ip-panel-medallion">
-            <span className="ip-medallion-star">✦</span>
-            <span className="ip-medallion-line" />
-            <span className="ip-medallion-text">
-              {side === "left" ? "M" : "F"}
-            </span>
-            <span className="ip-medallion-line" />
-            <span className="ip-medallion-star">✦</span>
-          </div>
+        <div className="ip-door-panel ip-door-panel--middle">
+          <div className="ip-panel-inset" />
+          <div className="ip-panel-highlight" />
         </div>
-      </div>
 
-      <div className="ip-wood-panel ip-wood-panel--bottom">
-        <div className="ip-panel-border">
-          <span className="ip-bottom-ornament">❧ ✧ ❧</span>
+        <div className="ip-door-panel ip-door-panel--bottom">
+          <div className="ip-panel-inset" />
+          <div className="ip-panel-highlight" />
         </div>
+
+        <div className="ip-door-stile ip-door-stile--left" />
+        <div className="ip-door-stile ip-door-stile--right" />
       </div>
 
-      <div className="ip-door-rivets ip-door-rivets--top">
-        <i />
+      <div className="ip-door-metal ip-door-metal--top">
+        <span />
         <i />
       </div>
 
-      <div className="ip-door-rivets ip-door-rivets--bottom">
-        <i />
+      <div className="ip-door-metal ip-door-metal--bottom">
+        <span />
         <i />
       </div>
 
       <div className="ip-door-handle">
-        <span className="ip-handle-backplate" />
+        <span className="ip-handle-plate" />
+        <span className="ip-handle-neck" />
         <span className="ip-handle-ring" />
-        <span className="ip-handle-drop" />
       </div>
 
       <div className="ip-door-hinges">
@@ -62,22 +63,8 @@ function DoorOrnaments({ side }: { side: "left" | "right" }) {
         <i />
         <i />
       </div>
-    </>
-  );
-}
 
-function DoorPanel({
-  side,
-  doorRef,
-}: {
-  side: "left" | "right";
-  doorRef: Ref<HTMLDivElement>;
-}) {
-  return (
-    <div ref={doorRef} className={`ip-door ip-door--${side}`}>
-      <div className="ip-door-planks" />
-      <DoorOrnaments side={side} />
-      <div className="ip-door-edge" />
+      <div className="ip-door-side-shadow" />
     </div>
   );
 }
@@ -106,9 +93,8 @@ export default function PortfolioEntrance({
 
     media.add("(min-width: 901px)", () => {
       gsap.set([leftDoor, rightDoor], {
-        x: 0,
-        xPercent: 0,
         rotationY: 0,
+        z: 0,
         force3D: true,
       });
 
@@ -121,8 +107,8 @@ export default function PortfolioEntrance({
         scrollTrigger: {
           trigger: root,
           start: "top top",
-          end: "+=1200",
-          scrub: 0.4,
+          end: "+=1400",
+          scrub: 0.5,
           pin: true,
           pinSpacing: true,
           anticipatePin: 1,
@@ -130,34 +116,36 @@ export default function PortfolioEntrance({
         },
       });
 
-      // Le titre disparaît progressivement
       intro.to(
         title,
         {
           autoAlpha: 0,
-          scale: 0.96,
-          duration: 0.5,
-          ease: "power1.out",
+          scale: 0.92,
+          y: -25,
+          duration: 0.35,
+          ease: "power2.out",
         },
         0,
       );
 
-      // La porte gauche s'ouvre vers la gauche
+      // Le battant gauche pivote sur ses gonds extérieurs
       intro.to(
         leftDoor,
         {
-          xPercent: -100,
+          rotationY: -105,
+          z: -35,
           duration: 1,
           ease: "power2.inOut",
         },
         0.15,
       );
 
-      // La porte droite s'ouvre vers la droite
+      // Le battant droit pivote dans le sens opposé
       intro.to(
         rightDoor,
         {
-          xPercent: 100,
+          rotationY: 105,
+          z: -35,
           duration: 1,
           ease: "power2.inOut",
         },
@@ -168,29 +156,29 @@ export default function PortfolioEntrance({
         ScrollTrigger.refresh();
       });
 
-      return () => {
-        window.cancelAnimationFrame(refreshId);
-      };
+      return () => window.cancelAnimationFrame(refreshId);
     });
 
-    return () => {
-      media.revert();
-    };
+    return () => media.revert();
   }, []);
 
   return (
     <section
       className="ip"
       ref={rootRef}
-      aria-label="Introduction du portfolio"
+      aria-label="Entrée du portfolio"
     >
       <div className="ip-wall" />
 
       <div className="ip-content">{children}</div>
 
       <div className="ip-stage">
+        <div className="ip-hall-light" />
+
         <DoorPanel side="left" doorRef={leftDoorRef} />
         <DoorPanel side="right" doorRef={rightDoorRef} />
+
+        <div className="ip-center-seam" />
       </div>
 
       <div className="ip-title" ref={titleRef}>
@@ -201,9 +189,7 @@ export default function PortfolioEntrance({
         </div>
 
         <div className="ip-title-seal">
-          <span>✦</span>
           <span className="ip-seal-letter">H</span>
-          <span>✦</span>
         </div>
 
         <p className="ip-title-intro">Une surprise vous attend...</p>

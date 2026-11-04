@@ -1,22 +1,19 @@
 
 /* =========================================
-   INTRODUCTION — PORTES DE POUDLARD
-   Palette : parchemin, bois, bordeaux et or
+   INTRO — PORTES MASSIVES DE POUDLARD
    ========================================= */
 
 .ip {
+  --ip-wood-dark: #160e0b;
+  --ip-wood: #291811;
+  --ip-wood-mid: #402719;
+  --ip-wood-light: #63432b;
+  --ip-gold: #a98248;
+  --ip-gold-light: #d0ad70;
   --ip-parchment: #f0e7d5;
-  --ip-paper: #d7c7a8;
-  --ip-wood: #251c1a;
-  --ip-wood-light: #392923;
-  --ip-burgundy: #641e2b;
-  --ip-gold: #b89552;
-  --ip-gold-light: #d9bd7d;
-  --ip-green: #394a3b;
 
   position: relative;
   width: 100vw;
-  max-width: none;
   height: 100vh;
   height: 100svh;
   margin-left: calc(50% - 50vw);
@@ -24,9 +21,9 @@
   overflow: hidden;
   z-index: 60;
   isolation: isolate;
+  background: #100c0a;
+  perspective: 2200px;
   box-sizing: border-box;
-  background: var(--ip-parchment);
-  perspective: 1800px;
 }
 
 .ip *,
@@ -36,31 +33,27 @@
 }
 
 /* =========================================
-   FOND DERRIÈRE LES PORTES
+   FOND APRÈS OUVERTURE
    ========================================= */
 
 .ip-wall {
   position: absolute;
-  z-index: 0;
   inset: 0;
+  z-index: 0;
 
   background:
     radial-gradient(
       ellipse at center,
-      rgba(217, 189, 125, 0.25),
-      transparent 48%
+      rgba(196, 145, 72, 0.3),
+      transparent 50%
     ),
     linear-gradient(
-      135deg,
-      #e5d8bf,
-      #f0e7d5 48%,
-      #d7c7a8
+      180deg,
+      #17100c,
+      #392516 55%,
+      #100b08
     );
 }
-
-/* =========================================
-   CONTENU DU PORTFOLIO DERRIÈRE LES PORTES
-   ========================================= */
 
 .ip-content {
   position: absolute;
@@ -76,503 +69,551 @@
 }
 
 /* =========================================
-   STRUCTURE DES DEUX PORTES
+   SCÈNE DES PORTES
+   Zoom pour supprimer les contours extérieurs
    ========================================= */
 
 .ip-stage {
   position: absolute;
   z-index: 3;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  perspective: 1800px;
+
+  inset: -7%;
+  width: 114%;
+  height: 114%;
+
+  display: flex;
+  overflow: visible;
+
+  perspective: 2200px;
   transform-style: preserve-3d;
+  transform: scale(1.04);
   transform-origin: center;
+
   pointer-events: none;
 }
 
-.ip-door {
+.ip-hall-light {
   position: absolute;
-  top: 0;
+  z-index: 0;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 190, 95, 0.65),
+      rgba(129, 76, 30, 0.25) 30%,
+      transparent 65%
+    ),
+    linear-gradient(
+      90deg,
+      #120c08,
+      #56371f,
+      #120c08
+    );
+
+  opacity: 0.9;
+}
+
+/* =========================================
+   LES DEUX BATTANTS
+   ========================================= */
+
+.ip-door {
+  position: relative;
+  z-index: 2;
+
   width: 50%;
   height: 100%;
+  flex: 0 0 50%;
+
   overflow: hidden;
 
   background: var(--ip-wood);
-  box-shadow:
-    inset 0 0 45px rgba(0, 0, 0, 0.55),
-    0 0 30px rgba(37, 28, 26, 0.3);
-
   transform-style: preserve-3d;
-  backface-visibility: visible;
+  backface-visibility: hidden;
   will-change: transform;
+
   pointer-events: auto;
 }
 
 .ip-door--left {
-  left: 0;
-  transform-origin: 0% 50%;
-  border-left: 5px solid #17110f;
-  border-right: 1px solid rgba(217, 189, 125, 0.65);
+  transform-origin: left center;
+  border-right: 2px solid #100906;
 }
 
 .ip-door--right {
-  left: 50%;
-  right: auto;
-  transform-origin: 100% 50%;
-  border-right: 5px solid #17110f;
-  border-left: 1px solid rgba(217, 189, 125, 0.65);
+  transform-origin: right center;
+  border-left: 2px solid #100906;
 }
 
 /* =========================================
-   TEXTURE DU BOIS
+   BOIS — COULEUR ET PROFONDEUR
    ========================================= */
 
-.ip-door-planks {
+.ip-door-wood {
   position: absolute;
   inset: 0;
 
   background:
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.42),
-      transparent 8%,
-      rgba(255, 255, 255, 0.025) 16%,
-      transparent 28%,
-      rgba(0, 0, 0, 0.18) 50%,
-      transparent 72%,
-      rgba(255, 255, 255, 0.025) 86%,
-      rgba(0, 0, 0, 0.3)
+      rgba(0, 0, 0, 0.7),
+      transparent 12%,
+      rgba(255, 194, 119, 0.06) 32%,
+      transparent 55%,
+      rgba(0, 0, 0, 0.35)
     ),
     repeating-linear-gradient(
       90deg,
-      #251c1a 0,
-      #34251f 3%,
-      #2b201c 6%,
-      #3a2921 9%,
-      #251c1a 12%
+      #1d110c 0,
+      #2b1a11 4%,
+      #382318 8%,
+      #24150e 12%,
+      #432b1c 16%,
+      #21130d 21%
     );
-
-  opacity: 0.98;
-}
-
-.ip-door-planks::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    repeating-linear-gradient(
-      178deg,
-      transparent 0 35px,
-      rgba(15, 9, 7, 0.15) 36px,
-      transparent 38px 78px
-    ),
-    repeating-linear-gradient(
-      3deg,
-      transparent 0 120px,
-      rgba(0, 0, 0, 0.12) 121px,
-      transparent 125px
-    );
-
-  opacity: 0.65;
-}
-
-.ip-door-planks::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    radial-gradient(
-      ellipse at 20% 30%,
-      rgba(184, 149, 82, 0.10),
-      transparent 40%
-    ),
-    radial-gradient(
-      ellipse at 80% 70%,
-      rgba(0, 0, 0, 0.25),
-      transparent 50%
-    );
-
-  pointer-events: none;
-}
-
-/* =========================================
-   CADRE EXTÉRIEUR
-   ========================================= */
-
-.ip-door-frame {
-  position: absolute;
-  inset: 3.5%;
-  z-index: 2;
-
-  border: 2px solid rgba(184, 149, 82, 0.85);
 
   box-shadow:
-    inset 0 0 0 4px rgba(15, 10, 8, 0.65),
-    inset 0 0 0 6px rgba(184, 149, 82, 0.28),
-    0 0 12px rgba(0, 0, 0, 0.4);
+    inset 0 0 65px rgba(0, 0, 0, 0.75),
+    inset 0 0 15px rgba(0, 0, 0, 0.8);
 }
 
-.ip-frame-inner {
+/* Veines et irrégularités du chêne */
+
+.ip-door-grain {
   position: absolute;
-  inset: 9px;
-  border: 1px solid rgba(217, 189, 125, 0.48);
-}
+  inset: 0;
+  z-index: 1;
 
-.ip-frame-inner::before,
-.ip-frame-inner::after {
-  content: "✦";
-  position: absolute;
-  color: var(--ip-gold-light);
-  font-family: Georgia, serif;
-  font-size: 20px;
-  text-shadow: 0 0 10px rgba(217, 189, 125, 0.4);
-}
+  background:
+    repeating-linear-gradient(
+      89deg,
+      transparent 0 18px,
+      rgba(10, 5, 3, 0.18) 19px,
+      transparent 21px 47px
+    ),
+    repeating-linear-gradient(
+      91deg,
+      transparent 0 73px,
+      rgba(151, 103, 58, 0.12) 74px,
+      transparent 77px 132px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 110px,
+      rgba(0, 0, 0, 0.13) 111px,
+      transparent 114px 220px
+    ),
+    radial-gradient(
+      ellipse at 30% 20%,
+      rgba(153, 99, 53, 0.22),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 75% 75%,
+      rgba(0, 0, 0, 0.4),
+      transparent 45%
+    );
 
-.ip-frame-inner::before {
-  top: -12px;
-  left: -8px;
-}
-
-.ip-frame-inner::after {
-  right: -8px;
-  bottom: -12px;
+  mix-blend-mode: screen;
+  opacity: 0.55;
 }
 
 /* =========================================
-   PANNEAUX SCULPTÉS
+   STRUCTURE EN RELIEF
    ========================================= */
 
-.ip-wood-panel {
+.ip-door-structure {
   position: absolute;
   z-index: 2;
-  left: 13%;
-  width: 74%;
+  inset: 3.5% 5%;
 
-  border: 2px solid rgba(184, 149, 82, 0.7);
+  border: 9px solid #1a100b;
+
+  box-shadow:
+    inset 0 0 0 2px rgba(151, 104, 59, 0.55),
+    inset 0 0 0 8px rgba(0, 0, 0, 0.55),
+    0 0 0 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Panneaux de bois profonds */
+
+.ip-door-panel {
+  position: absolute;
+  left: 9%;
+  width: 82%;
+
+  border: 8px solid #1b100b;
 
   background:
     linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.035),
+      145deg,
+      rgba(125, 78, 42, 0.38),
       transparent 35%,
-      rgba(0, 0, 0, 0.28)
+      rgba(0, 0, 0, 0.45) 85%
     ),
-    linear-gradient(
+    repeating-linear-gradient(
       90deg,
-      #1e1512,
-      #38271e 35%,
-      #291d18 70%,
-      #1b1411
+      #342014,
+      #422a1b 15%,
+      #26170f 35%,
+      #3b2517 60%,
+      #21130d
     );
 
   box-shadow:
-    inset 0 0 0 5px rgba(0, 0, 0, 0.28),
-    inset 0 0 0 7px rgba(184, 149, 82, 0.18),
-    0 5px 15px rgba(0, 0, 0, 0.25);
+    inset 0 0 0 2px rgba(124, 82, 47, 0.6),
+    inset 0 0 0 8px rgba(0, 0, 0, 0.38),
+    inset 0 12px 22px rgba(0, 0, 0, 0.35),
+    0 4px 12px rgba(0, 0, 0, 0.65);
 }
 
-.ip-wood-panel--top {
-  top: 9%;
-  height: 22%;
+.ip-door-panel--top {
+  top: 5%;
+  height: 25%;
 }
 
-.ip-wood-panel--middle {
-  top: 34%;
+.ip-door-panel--middle {
+  top: 33%;
   height: 34%;
 }
 
-.ip-wood-panel--bottom {
-  bottom: 9%;
-  height: 22%;
+.ip-door-panel--bottom {
+  bottom: 5%;
+  height: 25%;
 }
 
-.ip-panel-border {
+/* Relief intérieur des panneaux */
+
+.ip-panel-inset {
   position: absolute;
-  inset: 9px;
-  border: 1px solid rgba(217, 189, 125, 0.45);
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.25);
-}
+  inset: 10px;
 
-.ip-panel-border::before {
-  content: "";
-  position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(184, 149, 82, 0.16);
-}
-
-/* =========================================
-   GRAVURES DÉCORATIVES
-   ========================================= */
-
-.ip-carving {
-  position: absolute;
-  color: var(--ip-gold);
-  font-family: Georgia, serif;
-  text-shadow: 0 0 8px rgba(184, 149, 82, 0.35);
-}
-
-.ip-carving--top {
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(22px, 3vw, 40px);
-}
-
-.ip-carving--left {
-  left: 8%;
-  top: 50%;
-  transform: translateY(-50%) rotate(-35deg);
-  font-size: clamp(25px, 3vw, 42px);
-}
-
-.ip-carving--right {
-  right: 8%;
-  top: 50%;
-  transform: translateY(-50%) rotate(35deg) scaleX(-1);
-  font-size: clamp(25px, 3vw, 42px);
-}
-
-.ip-bottom-ornament {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  color: var(--ip-gold);
-  font-family: Georgia, serif;
-  font-size: clamp(22px, 3vw, 40px);
-  letter-spacing: 0.3em;
-  white-space: nowrap;
-  text-shadow: 0 0 10px rgba(184, 149, 82, 0.3);
-}
-
-/* =========================================
-   MÉDAILLON CENTRAL SUR LES PORTES
-   ========================================= */
-
-.ip-panel-medallion {
-  position: absolute;
-  inset: 12%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(5px, 1.2vh, 12px);
-
-  border: 1px solid rgba(184, 149, 82, 0.3);
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(184, 149, 82, 0.09),
-      transparent 70%
-    );
-}
-
-.ip-medallion-star {
-  color: var(--ip-gold-light);
-  font-size: clamp(13px, 1.5vw, 20px);
-}
-
-.ip-medallion-line {
-  width: 35%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--ip-gold),
-    transparent
-  );
-}
-
-.ip-medallion-text {
-  color: var(--ip-gold-light);
-  font-family: Georgia, serif;
-  font-size: clamp(35px, 5vw, 75px);
-  font-style: italic;
-  text-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.6),
-    0 0 18px rgba(184, 149, 82, 0.3);
-}
-
-/* =========================================
-   RIVETS MÉTALLIQUES
-   ========================================= */
-
-.ip-door-rivets {
-  position: absolute;
-  z-index: 4;
-  left: 50%;
-  width: 74%;
-  transform: translateX(-50%);
-
-  display: flex;
-  justify-content: space-between;
-}
-
-.ip-door-rivets--top {
-  top: 5.5%;
-}
-
-.ip-door-rivets--bottom {
-  bottom: 5.5%;
-}
-
-.ip-door-rivets i {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-
-  background: radial-gradient(
-    circle at 35% 30%,
-    #f0d99d,
-    #b89552 50%,
-    #624521
-  );
+  border: 2px solid rgba(117, 77, 43, 0.5);
 
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.65),
-    0 0 5px rgba(184, 149, 82, 0.25);
+    inset 0 0 0 4px rgba(0, 0, 0, 0.35),
+    inset 0 0 28px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(0, 0, 0, 0.35);
+}
+
+.ip-panel-highlight {
+  position: absolute;
+  inset: 17px;
+
+  border-top: 2px solid rgba(177, 125, 72, 0.2);
+  border-left: 1px solid rgba(177, 125, 72, 0.12);
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.45);
 }
 
 /* =========================================
-   POIGNÉES EN LAITON
+   TRAVERSES HORIZONTALES
+   ========================================= */
+
+.ip-door-rail {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  height: 2.5%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #68462b,
+      #382216 30%,
+      #1a100b 75%,
+      #69462a
+    );
+
+  box-shadow:
+    0 4px 9px rgba(0, 0, 0, 0.7),
+    inset 0 1px 2px rgba(207, 160, 101, 0.3);
+}
+
+.ip-door-rail--top {
+  top: 0;
+}
+
+.ip-door-rail--middle {
+  top: 31.5%;
+}
+
+.ip-door-rail--bottom {
+  bottom: 0;
+}
+
+/* Montants verticaux */
+
+.ip-door-stile {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  width: 5%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #110a07,
+      #543721 35%,
+      #2b1a10 70%,
+      #100906
+    );
+
+  box-shadow:
+    2px 0 8px rgba(0, 0, 0, 0.55),
+    inset 1px 0 rgba(194, 144, 83, 0.15);
+}
+
+.ip-door-stile--left {
+  left: 0;
+}
+
+.ip-door-stile--right {
+  right: 0;
+}
+
+/* =========================================
+   FERRURES EN FER FORGÉ
+   ========================================= */
+
+.ip-door-metal {
+  position: absolute;
+  z-index: 7;
+  left: 4%;
+  width: 24%;
+  height: 4%;
+
+  border: 2px solid #211812;
+  border-radius: 3px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #80633f,
+      #30251a 35%,
+      #17120e 70%,
+      #715331
+    );
+
+  box-shadow:
+    0 3px 7px rgba(0, 0, 0, 0.65),
+    inset 0 1px 2px rgba(231, 194, 130, 0.35);
+}
+
+.ip-door-metal--top {
+  top: 17%;
+}
+
+.ip-door-metal--bottom {
+  bottom: 17%;
+}
+
+.ip-door-metal span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 25%,
+    #e0c28a,
+    #75552f 65%,
+    #24180e
+  );
+
+  box-shadow: 0 1px 3px #000;
+}
+
+.ip-door-metal i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 65%;
+  height: 1px;
+  transform: translate(-50%, -50%);
+
+  background: rgba(212, 173, 111, 0.35);
+}
+
+/* =========================================
+   POIGNÉES CENTRALES
    ========================================= */
 
 .ip-door-handle {
   position: absolute;
-  z-index: 5;
-  top: 50%;
-  right: 5%;
-  width: clamp(30px, 3vw, 46px);
-  height: clamp(90px, 13vh, 145px);
+  z-index: 9;
+  top: 48%;
+  width: 7%;
+  height: 18%;
   transform: translateY(-50%);
 }
 
-.ip-door--right .ip-door-handle {
-  right: auto;
-  left: 5%;
+.ip-door--left .ip-door-handle {
+  right: 3%;
 }
 
-.ip-handle-backplate {
+.ip-door--right .ip-door-handle {
+  left: 3%;
+}
+
+.ip-handle-plate {
   position: absolute;
   inset: 0;
 
-  border: 2px solid #a77f3d;
+  border: 2px solid #4e3820;
   border-radius: 45% 45% 8px 8px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #49331b,
+      #c09a5b 35%,
+      #80602f 65%,
+      #342213
+    );
+
+  box-shadow:
+    inset 0 0 5px rgba(255, 225, 165, 0.35),
+    0 5px 9px rgba(0, 0, 0, 0.7);
+}
+
+.ip-handle-neck {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  width: 45%;
+  height: 17%;
+  transform: translateX(-50%);
+
+  border-radius: 5px;
 
   background: linear-gradient(
     90deg,
-    #735027,
-    #d9bd7d 35%,
-    #a77b37 65%,
-    #4e351d
+    #63451f,
+    #e0bf7c,
+    #765329
   );
 
-  box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.5),
-    inset 0 0 4px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
 }
 
 .ip-handle-ring {
   position: absolute;
-  top: 28%;
+  top: 45%;
   left: 50%;
-  width: 75%;
+  width: 85%;
   aspect-ratio: 1;
   transform: translateX(-50%);
 
-  border: 5px solid #c6a35f;
+  border: 5px solid #c6a467;
   border-radius: 50%;
 
   background: transparent;
 
   box-shadow:
-    0 2px 5px rgba(0, 0, 0, 0.5),
-    inset 0 0 3px rgba(255, 255, 255, 0.5);
-}
-
-.ip-handle-drop {
-  position: absolute;
-  top: 15%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  transform: translateX(-50%);
-
-  border-radius: 50%;
-  background: #e1c783;
-  box-shadow: 0 0 5px rgba(217, 189, 125, 0.5);
+    inset 0 0 3px rgba(255, 236, 184, 0.7),
+    0 3px 6px rgba(0, 0, 0, 0.8);
 }
 
 /* =========================================
-   CHARNIÈRES
+   CHARNIÈRES EXTÉRIEURES
    ========================================= */
 
 .ip-door-hinges {
   position: absolute;
-  z-index: 5;
+  z-index: 8;
   top: 8%;
   bottom: 8%;
-  left: 1px;
+  width: 4%;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+.ip-door--left .ip-door-hinges {
+  left: 0;
 }
 
 .ip-door--right .ip-door-hinges {
-  left: auto;
-  right: 1px;
+  right: 0;
 }
 
 .ip-door-hinges i {
   display: block;
-  width: 12px;
-  height: 58px;
+  width: 100%;
+  height: 12%;
 
-  border: 1px solid #75562e;
-  border-radius: 2px;
+  border: 2px solid #392719;
+  border-radius: 3px;
 
   background: linear-gradient(
     90deg,
-    #59401f,
-    #d0ad69 45%,
-    #8b652f
+    #20160f,
+    #9a7545 40%,
+    #4a341d 75%,
+    #160f0a
   );
 
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.8),
+    inset 0 1px rgba(224, 190, 130, 0.25);
 }
 
-/* =========================================
-   CHANT INTÉRIEUR DES PORTES
-   ========================================= */
+/* Ombre sur le côté du battant */
 
-.ip-door-edge {
+.ip-door-side-shadow {
   position: absolute;
-  z-index: 6;
+  z-index: 10;
   top: 0;
   bottom: 0;
-  right: 0;
-  width: 5px;
+  width: 12px;
 
   background: linear-gradient(
     90deg,
-    #3b281b,
-    #d0ad69,
-    #4b351f
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.15),
+    transparent
   );
 
-  box-shadow: 0 0 8px rgba(184, 149, 82, 0.25);
+  pointer-events: none;
 }
 
-.ip-door--right .ip-door-edge {
-  right: auto;
+.ip-door--left .ip-door-side-shadow {
   left: 0;
+}
+
+.ip-door--right .ip-door-side-shadow {
+  right: 0;
+  transform: rotate(180deg);
+}
+
+/* Jointure centrale */
+
+.ip-center-seam {
+  position: absolute;
+  z-index: 12;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  transform: translateX(-50%);
+
+  background: linear-gradient(
+    90deg,
+    #090604,
+    #65452a,
+    #090604
+  );
+
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
 }
 
 /* =========================================
@@ -581,7 +622,7 @@
 
 .ip-title {
   position: absolute;
-  z-index: 10;
+  z-index: 20;
   top: 50%;
   left: 50%;
   width: min(94vw, 1050px);
@@ -593,14 +634,12 @@
   align-items: center;
   text-align: center;
 
-  pointer-events: none;
-  will-change: transform, opacity;
-
   padding: clamp(20px, 4vw, 45px);
   color: var(--ip-parchment);
-}
 
-/* Petit surtitre */
+  pointer-events: none;
+  will-change: transform, opacity;
+}
 
 .ip-title-eyebrow {
   display: flex;
@@ -608,24 +647,24 @@
   justify-content: center;
   gap: 14px;
 
-  color: var(--ip-gold-light);
+  color: #d5b77e;
   font-family: "DM Sans", sans-serif;
   font-size: clamp(10px, 0.85vw, 13px);
   font-weight: 600;
   letter-spacing: 0.32em;
   text-transform: uppercase;
 
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 8px #000;
 }
 
 .ip-title-eyebrow span {
-  display: block;
   width: clamp(25px, 4vw, 55px);
   height: 1px;
+
   background: linear-gradient(
     90deg,
     transparent,
-    var(--ip-gold)
+    #c19a5b
   );
 }
 
@@ -633,48 +672,36 @@
   transform: rotate(180deg);
 }
 
-/* Sceau de cire */
-
 .ip-title-seal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
+  display: grid;
+  place-items: center;
 
   width: 66px;
   height: 66px;
   margin: 22px 0 15px;
 
-  border: 2px solid rgba(217, 189, 125, 0.9);
+  border: 2px solid #bd985d;
   border-radius: 50%;
 
   background:
     radial-gradient(
       circle at 35% 25%,
-      #873a43,
+      #91424a,
       #641e2b 55%,
       #35151b
     );
 
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.4),
-    inset 0 0 0 3px rgba(184, 149, 82, 0.25),
-    0 0 20px rgba(184, 149, 82, 0.12);
-
-  color: var(--ip-gold-light);
-  font-family: Georgia, serif;
-}
-
-.ip-title-seal > span:not(.ip-seal-letter) {
-  font-size: 8px;
+    0 5px 15px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 3px rgba(184, 149, 82, 0.3);
 }
 
 .ip-seal-letter {
-  font-size: 35px;
+  color: #e2c68d;
+  font-family: Georgia, serif;
+  font-size: 38px;
   font-style: italic;
 }
-
-/* Texte d'introduction */
 
 .ip-title-intro {
   margin: 0 0 8px;
@@ -685,10 +712,8 @@
   font-style: italic;
   letter-spacing: 0.1em;
 
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 2px 8px #000;
 }
-
-/* Titre principal */
 
 .ip-title h1 {
   margin: 0;
@@ -697,23 +722,19 @@
   font-family: "Instrument Serif", Georgia, serif;
   font-size: clamp(65px, 8.5vw, 125px);
   font-weight: 400;
-  font-style: normal;
   line-height: 0.88;
   letter-spacing: -0.035em;
 
   text-shadow:
-    0 2px 0 rgba(0, 0, 0, 0.45),
-    0 5px 12px rgba(0, 0, 0, 0.7),
-    0 0 30px rgba(217, 189, 125, 0.2);
+    0 3px 0 rgba(0, 0, 0, 0.5),
+    0 6px 18px rgba(0, 0, 0, 0.9);
 }
 
 .ip-title h1 em {
-  color: var(--ip-gold-light);
+  color: #d9bd7d;
   font-weight: 400;
   font-style: italic;
 }
-
-/* Séparateur */
 
 .ip-title-divider {
   display: flex;
@@ -732,7 +753,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    var(--ip-gold)
+    #b89552
   );
 }
 
@@ -741,14 +762,10 @@
 }
 
 .ip-title-divider i {
-  color: var(--ip-gold-light);
+  color: #d9bd7d;
   font-size: 14px;
   font-style: normal;
 }
-
-/* =========================================
-   INDICATION DE DÉFILEMENT
-   ========================================= */
 
 .ip-title .ip-scroll-hint {
   display: flex;
@@ -765,27 +782,20 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
 
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.85);
-}
-
-.ip-title .ip-scroll-hint > span {
-  font-size: inherit;
+  text-shadow: 0 2px 7px #000;
 }
 
 .ip-title .ip-scroll-hint > i {
-  display: block;
-  color: var(--ip-gold-light);
+  color: #d9bd7d;
   font-family: sans-serif;
   font-size: 22px;
   font-style: normal;
-  font-weight: 400;
 
   animation: ip-arrow-bounce 1.5s ease-in-out infinite;
 }
 
 @keyframes ip-arrow-bounce {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0);
   }
 
@@ -795,21 +805,20 @@
 }
 
 /* =========================================
-   TABLETTES
+   TABLETTE
    ========================================= */
 
 @media (max-width: 900px) {
-  .ip-door-frame {
-    inset: 3%;
+  .ip-door-structure {
+    inset: 3% 4%;
   }
 
-  .ip-wood-panel {
-    left: 10%;
-    width: 80%;
+  .ip-door-panel {
+    border-width: 5px;
   }
 
-  .ip-title {
-    width: 96vw;
+  .ip-door-handle {
+    width: 9%;
   }
 
   .ip-title h1 {
@@ -820,175 +829,19 @@
     width: 55px;
     height: 55px;
   }
-
-  .ip-seal-letter {
-    font-size: 29px;
-  }
-
-  .ip-door-hinges i {
-    height: 34px;
-  }
 }
 
 /* =========================================
-   MOBILES
-   L'accueil reste visible sans introduction
+   MOBILE — PAS D'INTRODUCTION
    ========================================= */
 
 @media (max-width: 560px) {
-  .ip-door {
-    width: 50%;
-  }
-
-  .ip-door-frame {
-    inset: 3%;
-    border-width: 1px;
-  }
-
-  .ip-frame-inner {
-    inset: 5px;
-  }
-
-  .ip-wood-panel {
-    left: 9%;
-    width: 82%;
-  }
-
-  .ip-wood-panel--top {
-    top: 13%;
-    height: 19%;
-  }
-
-  .ip-wood-panel--middle {
-    top: 35%;
-    height: 30%;
-  }
-
-  .ip-wood-panel--bottom {
-    bottom: 13%;
-    height: 19%;
-  }
-
-  .ip-panel-border {
-    inset: 5px;
-  }
-
-  .ip-carving--left,
-  .ip-carving--right {
-    font-size: 20px;
-  }
-
-  .ip-carving--top {
-    font-size: 20px;
-  }
-
-  .ip-bottom-ornament {
-    font-size: 19px;
-  }
-
-  .ip-medallion-text {
-    font-size: 35px;
-  }
-
-  .ip-door-handle {
-    width: 24px;
-    height: 75px;
-  }
-
-  .ip-handle-ring {
-    border-width: 3px;
-  }
-
-  .ip-door-hinges {
-    width: 7px;
-  }
-
-  .ip-door-hinges i {
-    width: 7px;
-    height: 25px;
-  }
-
-  .ip-door-rivets i {
-    width: 6px;
-    height: 6px;
-  }
-
-  .ip-title {
-    width: 96vw;
-    padding: 15px;
-  }
-
-  .ip-title-eyebrow {
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    gap: 8px;
-  }
-
-  .ip-title-eyebrow span {
-    width: 22px;
-  }
-
-  .ip-title-seal {
-    width: 48px;
-    height: 48px;
-    margin: 15px 0 12px;
-  }
-
-  .ip-seal-letter {
-    font-size: 25px;
-  }
-
-  .ip-title-intro {
-    font-size: 11px;
-  }
-
-  .ip-title h1 {
-    font-size: clamp(47px, 11vw, 68px);
-  }
-
-  .ip-title-divider {
-    margin-top: 18px;
-  }
-
-  .ip-title .ip-scroll-hint {
-    font-size: 9px;
-    letter-spacing: 0.09em;
-    margin-top: 16px;
-  }
-
-  .ip-title .ip-scroll-hint > i {
-    font-size: 19px;
-  }
-}
-
-/* =========================================
-   ACCESSIBILITÉ
-   ========================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .ip {
-    scroll-behavior: auto;
-  }
-
-  .ip-scroll-hint i {
-    animation: none;
-  }
-}
-
-/* =========================================
-   TABLETTE ET MOBILE — SANS INTRODUCTION
-   Le contenu Accueil reste visible normalement
-   ========================================= */
-
-@media (max-width: 900px) {
   .ip {
     position: relative;
     width: 100%;
-    max-width: 100%;
     height: auto;
     min-height: 0;
     margin-left: 0;
-    padding: 0;
     overflow: visible;
     perspective: none;
     isolation: auto;
@@ -1009,5 +862,49 @@
     min-height: 100svh;
     overflow: visible;
     z-index: auto;
+  }
+}
+
+/* =========================================
+   TABLETTE — CONTENU SANS INTRO
+   ========================================= */
+
+@media (min-width: 561px) and (max-width: 900px) {
+  .ip {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin-left: 0;
+    overflow: visible;
+    perspective: none;
+    isolation: auto;
+    z-index: auto;
+  }
+
+  .ip-wall,
+  .ip-stage,
+  .ip-title {
+    display: none !important;
+  }
+
+  .ip-content {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+    z-index: auto;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITÉ
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ip-scroll-hint i {
+    animation: none;
   }
 }
