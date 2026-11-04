@@ -116,6 +116,7 @@ export default function PortfolioEntrance({
     const leftDoor = leftDoorRef.current;
     const rightDoor = rightDoorRef.current;
     const title = titleRef.current;
+    const seam = root?.querySelector<HTMLElement>(".ip-center-seam");
 
     if (!root || !track || !leftDoor || !rightDoor || !title) return;
 
@@ -154,6 +155,15 @@ export default function PortfolioEntrance({
         },
         0,
       );
+
+      // La barre centrale disparaît dès que les portes s'ouvrent
+      if (seam) {
+        intro.to(
+          seam,
+          { autoAlpha: 0, duration: 0.1, ease: "none" },
+          0.15,
+        );
+      }
 
       // La porte gauche coulisse vers la gauche
       intro.to(

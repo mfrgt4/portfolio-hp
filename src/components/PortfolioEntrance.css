@@ -39,7 +39,7 @@
   overflow: hidden;
   z-index: 60;
   isolation: isolate;
-  background: #100c0a;
+  background: transparent;
   perspective: 2200px;
   box-sizing: border-box;
 }
@@ -59,7 +59,7 @@
   inset: 0;
   z-index: 0;
 
-  background: #100c0a;
+  background: transparent;
 }
 
 .ip-content {
@@ -105,7 +105,7 @@
   z-index: 0;
   inset: 0;
 
-  background: #100c0a;
+  background: transparent;
 
   opacity: 1;
 }
