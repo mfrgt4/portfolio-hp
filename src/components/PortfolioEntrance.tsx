@@ -160,6 +160,7 @@ export default function PortfolioEntrance({
   }, []);
 
   return (
+    <div className="ip-bleed">
     <section className="ip" ref={rootRef} aria-label="Entrée du portfolio">
       <div className="ip-wall" />
 
@@ -205,5 +206,6 @@ export default function PortfolioEntrance({
         </p>
       </div>
     </section>
+    </div>
   );
 }

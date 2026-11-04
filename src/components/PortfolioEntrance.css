@@ -1,7 +1,14 @@
-
 /* =========================================
    INTRO — PORTES MASSIVES DE POUDLARD
    ========================================= */
+
+/* Wrapper plein écran : la marge négative est ici, PAS sur l'élément épinglé */
+.ip-bleed {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
 
 .ip {
   --ip-wood-dark: #160e0b;
@@ -13,10 +20,10 @@
   --ip-parchment: #f0e7d5;
 
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   height: 100svh;
-  margin-left: calc(50% - 50vw);
+  margin: 0;
   padding: 0;
   overflow: hidden;
   z-index: 60;
@@ -812,6 +819,14 @@
 /* =========================================
    MOBILE — PAS D'INTRODUCTION
    ========================================= */
+
+@media (max-width: 900px) {
+  .ip-bleed {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
+}
 
 @media (max-width: 560px) {
   .ip {
