@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode, type Ref } from "react";
+import { useEffect, useLayoutEffect, useRef, type ReactNode, type Ref } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./PortfolioEntrance.css";
@@ -75,11 +75,40 @@ type PortfolioEntranceProps = {
 export default function PortfolioEntrance({
   children,
 }: PortfolioEntranceProps) {
+  const bleedRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLElement>(null);
   const leftDoorRef = useRef<HTMLDivElement>(null);
   const rightDoorRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+
+  // Plein écran réel : quel que soit le parent (centré, décalé, max-width...)
+  useLayoutEffect(() => {
+    const el = bleedRef.current;
+    if (!el) return;
+
+    const fit = () => {
+      el.style.marginLeft = "0px";
+      el.style.width = "";
+      if (window.innerWidth <= 900) return;
+      const left = el.getBoundingClientRect().left;
+      el.style.marginLeft = `${-left}px`;
+      el.style.width = `${document.documentElement.clientWidth}px`;
+    };
+
+    fit();
+    window.addEventListener("resize", fit);
+    const ro = new ResizeObserver(() => {
+      fit();
+      ScrollTrigger.refresh();
+    });
+    if (el.parentElement) ro.observe(el.parentElement);
+
+    return () => {
+      window.removeEventListener("resize", fit);
+      ro.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -169,7 +198,7 @@ export default function PortfolioEntrance({
   }, []);
 
   return (
-    <div className="ip-bleed">
+    <div className="ip-bleed" ref={bleedRef}>
       <div className="ip-track" ref={trackRef}>
     <section className="ip" ref={rootRef} aria-label="Entrée du portfolio">
       <div className="ip-wall" />
