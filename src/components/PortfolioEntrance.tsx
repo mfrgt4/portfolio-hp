@@ -355,18 +355,12 @@ export default function PortfolioEntrance({
           </div>
 
           <div className="ip-title" ref={titleRef}>
-            <div className="ip-title-eyebrow">
-              <span />
-              PORTFOLIO — ÉDITION POUDLARD
-              <span />
-            </div>
-
             <div className="ip-title-seal">
               <span className="ip-seal-letter">M</span>
             </div>
 
             <p className="ip-title-intro">
-              Une invitation à découvrir mon univers créatif…
+              Une invitation à découvrir mon portfolio…
             </p>
 
             <h1>

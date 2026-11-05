@@ -390,7 +390,7 @@ export default function HomeLetter() {
                 </div>
 
                 <p className="hl-school hl-ink" style={d(0.7)}>
-                  École de création &amp; d’imagination
+                  École des Métiers du Multimédia &amp; de l'Internet
                 </p>
 
                 <div className="hl-rule hl-ink" style={d(0.8)} aria-hidden="true">
@@ -405,7 +405,7 @@ export default function HomeLetter() {
                 </p>
 
                 <h1 id="hl-title" className="hl-title hl-ink" style={d(1.15)}>
-                  Une invitation à découvrir <em>mon univers…</em>
+                  Une invitation à découvrir <em>mon portfolio…</em>
                 </h1>
               </header>
 
@@ -416,10 +416,9 @@ export default function HomeLetter() {
                 </p>
 
                 <p className="hl-p hl-ink" style={d(1.75)}>
-                  Nous avons le plaisir de vous inviter à découvrir l’univers
-                  créatif de <strong className="hl-name">{profile.name}</strong>,
-                  étudiante en deuxième année de BUT Métiers du Multimédia et de
-                  l’Internet à l’Université Clermont Auvergne, au Puy-en-Velay.
+                  J'ai le plaisir de vous inviter à découvrir mon univers
+                  créatif ! Je suis<strong className="hl-name">{profile.name}</strong>,
+                  étudiante en deuxième année de BUT MMI à l’Université Clermont Auvergne, au Puy-en-Velay.
                 </p>
 
                 <p className="hl-p hl-ink" style={d(1.95)}>
@@ -429,8 +428,8 @@ export default function HomeLetter() {
                 </p>
 
                 <p className="hl-p hl-ink" style={d(2.15)}>
-                  Nous vous invitons à parcourir ses créations et à découvrir les
-                  différentes facettes de son univers.
+                  Je vous invite à parcourir mes créations et à découvrir les
+                  différentes facettes de mon univers.
                 </p>
 
                 <div className="hl-links hl-ink" style={d(2.4)}>
