@@ -90,9 +90,10 @@ export default function PortfolioEntrance({
   const rightDoorRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const musicRef = useRef<HTMLIFrameElement>(null);
+  const musicStartedRef = useRef(false);
 
   const [doorsOpen, setDoorsOpen] = useState(false);
-  const [musicPlaying, setMusicPlaying] = useState(true);
+  const [musicPlaying, setMusicPlaying] = useState(false);
 
   // Commandes du lecteur YouTube
   const controlMusic = (command: "playVideo" | "pauseVideo") => {
@@ -106,6 +107,35 @@ export default function PortfolioEntrance({
     );
   };
 
+  // Démarrage de la musique au premier scroll
+  useEffect(() => {
+    const startMusic = () => {
+      if (musicStartedRef.current) return;
+
+      musicStartedRef.current = true;
+      controlMusic("playVideo");
+      setMusicPlaying(true);
+
+      window.removeEventListener("scroll", startMusic);
+      window.removeEventListener("wheel", startMusic);
+      window.removeEventListener("touchmove", startMusic);
+      window.removeEventListener("keydown", startMusic);
+    };
+
+    window.addEventListener("scroll", startMusic, { passive: true });
+    window.addEventListener("wheel", startMusic, { passive: true });
+    window.addEventListener("touchmove", startMusic, { passive: true });
+    window.addEventListener("keydown", startMusic);
+
+    return () => {
+      window.removeEventListener("scroll", startMusic);
+      window.removeEventListener("wheel", startMusic);
+      window.removeEventListener("touchmove", startMusic);
+      window.removeEventListener("keydown", startMusic);
+    };
+  }, []);
+
+  // Bouton lecture / pause
   const toggleMusic = () => {
     if (musicPlaying) {
       controlMusic("pauseVideo");
@@ -113,6 +143,7 @@ export default function PortfolioEntrance({
     } else {
       controlMusic("playVideo");
       setMusicPlaying(true);
+      musicStartedRef.current = true;
     }
   };
 
@@ -247,7 +278,7 @@ export default function PortfolioEntrance({
       <iframe
         ref={musicRef}
         className="ip-music-player"
-        src="https://www.youtube.com/embed/UuPb1J_RCJM?autoplay=1&controls=0&loop=1&playlist=UuPb1J_RCJM&enablejsapi=1&playsinline=1"
+        src="https://www.youtube.com/embed/UuPb1J_RCJM?autoplay=0&controls=0&loop=1&playlist=UuPb1J_RCJM&enablejsapi=1&playsinline=1"
         title="Musique du portfolio"
         allow="autoplay; encrypted-media"
         referrerPolicy="strict-origin-when-cross-origin"
