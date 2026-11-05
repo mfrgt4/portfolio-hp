@@ -1,0 +1,720 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Ms+Madi&display=swap");
+
+/* =========================================================
+   ACCUEIL — LETTRE D'ADMISSION
+   Palette locale à la section (la palette globale n'est pas touchée)
+   ========================================================= */
+
+/* #accueil.hl l'emporte sur les règles globales "#accueil" et "section" */
+section#accueil.hl {
+  --hl-parchment: #f3e8d2;
+  --hl-ink: #39291f;
+  --hl-wine: #741f2b;
+  --hl-gold: #b08d4f;
+  --hl-gold-dark: #8a6a33;
+  --hl-gold-light: #d8bb7e;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  padding: clamp(104px, 13vh, 140px) clamp(12px, 4vw, 40px)
+    clamp(80px, 11vh, 120px);
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 50% 38%,
+      rgba(255, 190, 110, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(ellipse at 50% 30%, #3b271b 0%, #24170f 48%, #120b07 100%);
+}
+
+/* Fondu vers le reste du site */
+section#accueil.hl::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  height: clamp(90px, 14vh, 150px);
+  background: linear-gradient(to bottom, transparent, var(--bg, #f5f3ef));
+  pointer-events: none;
+}
+
+.hl *,
+.hl *::before,
+.hl *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   DÉCOR : bougies et poussières
+   ========================================================= */
+
+.hl-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hl-glow {
+  position: absolute;
+  border-radius: 50%;
+  will-change: opacity;
+}
+
+.hl-glow--a {
+  top: -14%;
+  left: -12%;
+  width: 60%;
+  height: 75%;
+  background: radial-gradient(circle, rgba(255, 172, 86, 0.2), transparent 62%);
+  animation: hl-flicker 6.5s ease-in-out infinite;
+}
+
+.hl-glow--b {
+  right: -14%;
+  bottom: -10%;
+  width: 55%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(255, 160, 80, 0.14), transparent 62%);
+  animation: hl-flicker 8.2s ease-in-out -3s infinite;
+}
+
+@keyframes hl-flicker {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  18% {
+    opacity: 1;
+  }
+  34% {
+    opacity: 0.78;
+  }
+  52% {
+    opacity: 0.96;
+  }
+  71% {
+    opacity: 0.82;
+  }
+}
+
+.hl-mote {
+  position: absolute;
+  bottom: -12px;
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 226, 170, 0.95),
+    rgba(255, 200, 120, 0) 70%
+  );
+  opacity: 0;
+  animation: hl-rise var(--t) linear var(--d) infinite;
+}
+
+@keyframes hl-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  12% {
+    opacity: 0.85;
+  }
+  88% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--dx), -105vh, 0);
+  }
+}
+
+.hl-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* =========================================================
+   LA LETTRE
+   ========================================================= */
+
+.hl-stage {
+  position: relative;
+  z-index: 1;
+  width: min(840px, 100%);
+  perspective: 1800px;
+}
+
+.hl-tilt {
+  display: block;
+  transform: rotateX(calc(var(--hl-ty, 0) * -1.1deg))
+    rotateY(calc(var(--hl-tx, 0) * 1.5deg));
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: transform;
+}
+
+.hl-sheet {
+  position: relative;
+}
+
+/* ----- Le papier : texture, vieillissement, bords irréguliers ----- */
+
+.hl-paper {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+
+  background:
+    /* plis de la lettre pliée en trois */
+    linear-gradient(
+      to bottom,
+      transparent calc(33.33% - 2px),
+      rgba(95, 62, 25, 0.16) calc(33.33% - 1px),
+      rgba(255, 250, 236, 0.5) 33.33%,
+      transparent calc(33.33% + 3px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(66.66% - 2px),
+      rgba(95, 62, 25, 0.16) calc(66.66% - 1px),
+      rgba(255, 250, 236, 0.5) 66.66%,
+      transparent calc(66.66% + 3px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(33.33% - 40px),
+      rgba(120, 80, 35, 0.05) 33.33%,
+      transparent calc(33.33% + 40px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(66.66% - 40px),
+      rgba(120, 80, 35, 0.05) 66.66%,
+      transparent calc(66.66% + 40px)
+    ),
+    /* fibres du papier */
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .36 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .5 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+    /* taches et marbrures */
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='700' height='700'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='4' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .62 0 0 0 0 .46 0 0 0 0 .22 0 0 0 .9 -.35'/></filter><rect width='100%25' height='100%25' filter='url(%23m)'/></svg>"),
+    /* coins brunis */
+      radial-gradient(ellipse 38% 30% at 0% 0%, rgba(135, 88, 38, 0.3), transparent 70%),
+    radial-gradient(ellipse 38% 30% at 100% 0%, rgba(135, 88, 38, 0.26), transparent 70%),
+    radial-gradient(ellipse 40% 32% at 0% 100%, rgba(135, 88, 38, 0.34), transparent 70%),
+    radial-gradient(ellipse 40% 32% at 100% 100%, rgba(135, 88, 38, 0.36), transparent 70%),
+    /* lumière douce au centre */
+      radial-gradient(ellipse 70% 55% at 50% 38%, rgba(255, 252, 240, 0.65), transparent 75%),
+    var(--hl-parchment);
+
+  box-shadow:
+    inset 0 0 80px rgba(140, 95, 45, 0.4),
+    inset 0 0 14px rgba(100, 65, 25, 0.35);
+
+  filter: url(#hl-edge) drop-shadow(0 34px 38px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35));
+}
+
+/* ----- Contenu ----- */
+
+.hl-content {
+  position: relative;
+  padding: clamp(42px, 6.4vw, 78px) clamp(26px, 7.4vw, 100px)
+    clamp(34px, 4.6vw, 54px);
+
+  color: var(--hl-ink);
+  font-family: "Cormorant Garamond", "Georgia", serif;
+  font-size: clamp(17px, 1.9vw, 20px);
+  font-weight: 500;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.hl-hand {
+  font-family: "Ms Madi", cursive;
+  font-weight: 400;
+  color: var(--hl-wine);
+}
+
+/* ----- En-tête ----- */
+
+.hl-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hl-crest {
+  width: clamp(54px, 7vw, 68px);
+}
+
+.hl-crest-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transition:
+    filter 0.5s ease,
+    scale 0.5s ease;
+}
+
+.hl-crest:hover .hl-crest-svg {
+  filter: drop-shadow(0 0 7px rgba(216, 187, 126, 0.75));
+  scale: 1.05;
+}
+
+.hl-school {
+  margin: 12px 0 0;
+  color: var(--hl-gold-dark);
+  font-size: clamp(10.5px, 1.25vw, 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.hl-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(320px, 70%);
+  margin: 14px auto;
+}
+
+.hl-rule span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hl-gold) 40%,
+    var(--hl-gold) 60%,
+    transparent
+  );
+}
+
+.hl-rule i {
+  color: var(--hl-gold);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.hl-address {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2px 0 0;
+  font-size: 1.05em;
+  font-style: italic;
+  line-height: 1.15;
+}
+
+.hl-address-name {
+  margin-top: 2px;
+  font-size: clamp(2rem, 5vw, 2.7rem);
+  line-height: 1.1;
+}
+
+.hl-title {
+  max-width: 17em;
+  margin: 18px auto 6px;
+  color: var(--hl-ink);
+  font-family: "IM Fell English", "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(27px, 4.4vw, 44px);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
+.hl-title em {
+  color: var(--hl-wine);
+  font-style: italic;
+}
+
+/* ----- Corps ----- */
+
+.hl-body {
+  margin-top: clamp(14px, 2vw, 22px);
+}
+
+.hl-salutation {
+  margin: 0 0 0.7em;
+  font-size: 1.1em;
+  font-style: italic;
+}
+
+.hl-p {
+  margin: 0 0 0.85em;
+  text-wrap: pretty;
+  hyphens: auto;
+}
+
+.hl-name {
+  color: var(--hl-wine);
+  font-weight: 600;
+}
+
+/* ----- Liens : annotations à l'encre, pas des boutons ----- */
+
+.hl-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 22px;
+  margin: 1.1em 0 0.2em;
+}
+
+.hl-link {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 4px 2px 5px;
+
+  color: var(--hl-wine);
+  font-family: "IM Fell English", "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-style: italic;
+  text-decoration: none;
+
+  background: linear-gradient(90deg, var(--hl-wine), var(--hl-gold)) 0 100% /
+    100% 1px no-repeat;
+  transition:
+    color 0.35s ease,
+    background-size 0.35s ease;
+}
+
+.hl-link b {
+  color: var(--hl-gold);
+  font-size: 0.55em;
+  font-style: normal;
+  font-weight: 400;
+  transition:
+    rotate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.35s ease;
+}
+
+.hl-link em {
+  font-style: normal;
+  transition: translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hl-link:hover,
+.hl-link:focus-visible {
+  color: #4f1019;
+  background-size: 100% 2px;
+  outline: none;
+}
+
+.hl-link:hover b,
+.hl-link:focus-visible b {
+  rotate: 180deg;
+  color: var(--hl-wine);
+}
+
+.hl-link:hover em,
+.hl-link:focus-visible em {
+  translate: 5px 0;
+}
+
+.hl-link-sep {
+  width: 1px;
+  height: 1.3em;
+  background: linear-gradient(transparent, var(--hl-gold), transparent);
+}
+
+/* ----- Signature et sceau ----- */
+
+.hl-sign {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: clamp(18px, 3vw, 30px);
+}
+
+.hl-closing {
+  margin: 0;
+  font-size: 1.08em;
+  font-style: italic;
+}
+
+.hl-signature {
+  margin: 0;
+  font-size: clamp(2.6rem, 7vw, 3.9rem);
+  line-height: 1.05;
+  rotate: -3deg;
+  transform-origin: 0 100%;
+}
+
+.hl-flourish {
+  display: block;
+  width: min(250px, 62vw);
+  height: auto;
+  margin: -2px 0 0 4px;
+  overflow: visible;
+}
+
+.hl-flourish path {
+  fill: none;
+  stroke: var(--hl-wine);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  opacity: 0.8;
+  transition:
+    stroke 0.4s ease,
+    opacity 0.4s ease;
+}
+
+.hl-sign:hover .hl-flourish path {
+  stroke: var(--hl-gold-dark);
+  opacity: 1;
+}
+
+.hl-seal {
+  position: relative;
+  flex: none;
+  width: clamp(88px, 13vw, 120px);
+  aspect-ratio: 1;
+  margin: 0 -2px -6px 0;
+  rotate: -8deg;
+  transition:
+    scale 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    rotate 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hl-seal:hover {
+  scale: 1.06;
+  rotate: -3deg;
+}
+
+.hl-seal-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hl-seal-glint {
+  animation: hl-glint 7s ease-in-out 3.5s infinite;
+}
+
+@keyframes hl-glint {
+  0%,
+  55% {
+    transform: translateX(0) skewX(-18deg);
+    opacity: 0;
+  }
+  62% {
+    opacity: 1;
+  }
+  85%,
+  100% {
+    transform: translateX(210px) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+/* ----- Post-scriptum et pied de lettre ----- */
+
+.hl-ps {
+  margin: clamp(10px, 2vw, 18px) 0 0;
+  font-size: clamp(1.45rem, 3.2vw, 1.85rem);
+  line-height: 1.25;
+  rotate: -1deg;
+  transform-origin: 0 50%;
+}
+
+.hl-footer {
+  margin-top: clamp(14px, 2.4vw, 24px);
+  text-align: center;
+}
+
+.hl-footer .hl-rule {
+  margin: 0 auto 10px;
+}
+
+.hl-footer p {
+  margin: 0;
+  color: var(--hl-gold-dark);
+  font-size: clamp(9.5px, 1.2vw, 11.5px);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   ANIMATIONS D'ARRIVÉE
+   Déclenchées par data-play (posé par PortfolioEntrance) ;
+   sans ce parent, tout reste simplement visible.
+   --hl-base = délai de départ (la lettre apparaît pendant
+   que les portes s'ouvrent).
+   ========================================================= */
+
+.ip-page[data-intro="true"] {
+  --hl-base: 1.9s;
+}
+
+.ip-page[data-play="false"] .hl-sheet,
+.ip-page[data-play="false"] .hl-ink,
+.ip-page[data-play="false"] .hl-stamp {
+  opacity: 0;
+}
+
+/* La lettre se déroule */
+.ip-page[data-play="true"] .hl-sheet {
+  animation: hl-unroll 1.9s cubic-bezier(0.3, 0.6, 0.2, 1) var(--hl-base, 0.1s)
+    both;
+}
+
+@keyframes hl-unroll {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+    clip-path: inset(-60px -80px 100% -80px);
+  }
+  10% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(-60px -80px -140px -80px);
+  }
+}
+
+/* L'encre apparaît */
+.ip-page[data-play="true"] .hl-ink {
+  animation: hl-ink 1s ease-out calc(var(--hl-base, 0.1s) + var(--hl-d, 0s))
+    both;
+}
+
+@keyframes hl-ink {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* Le flourish de la signature se trace */
+.ip-page[data-play="true"] .hl-flourish path {
+  animation: hl-draw 1.5s cubic-bezier(0.4, 0.1, 0.3, 1)
+    calc(var(--hl-base, 0.1s) + 3.1s) both;
+}
+
+@keyframes hl-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Le sceau est pressé sur le papier */
+.ip-page[data-play="true"] .hl-stamp {
+  animation: hl-stamp 0.8s cubic-bezier(0.3, 1.2, 0.4, 1)
+    calc(var(--hl-base, 0.1s) + 3.2s) both;
+}
+
+@keyframes hl-stamp {
+  0% {
+    opacity: 0;
+    transform: translateY(-34px) scale(1.55) rotate(-14deg);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(2px) scale(0.94) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* =========================================================
+   TABLETTE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  section#accueil.hl {
+    align-items: flex-start;
+    padding-top: clamp(92px, 14vw, 120px);
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+  .hl-content {
+    padding: 38px 24px 30px;
+  }
+
+  .hl-school {
+    letter-spacing: 0.22em;
+  }
+
+  .hl-title {
+    font-size: clamp(25px, 8vw, 32px);
+  }
+
+  .hl-links {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hl-link-sep {
+    display: none;
+  }
+
+  .hl-seal {
+    width: 84px;
+  }
+
+  .hl-p {
+    hyphens: manual;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .hl-mote {
+    display: none;
+  }
+
+  .hl-tilt {
+    transform: none;
+  }
+}
