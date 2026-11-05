@@ -17,7 +17,7 @@ import PortfolioEntrance from "./components/PortfolioEntrance";
 // ================= SONS =================
 const buttonSound = new Audio("/sounds/Click-buttons.mp3");
 const projectSound = new Audio("/sounds/Click-projets.mp3");
-const introSound = new Audio("/sounds/Intro-site.mp3");
+const introSound = new Audio("/sounds/Knock-on-a-door.mp3");
 
 buttonSound.volume = 0.08;
 projectSound.volume = 0.12;
