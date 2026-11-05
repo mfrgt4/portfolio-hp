@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties, type Ref } from "react";
 import { profile } from "../data";
 import "./HomeLetter.css";
 
@@ -96,7 +96,7 @@ function Crest() {
 function WaxSeal({
   lightRef,
 }: {
-  lightRef: React.RefObject<SVGFEPointLightElement | null>;
+  lightRef: Ref<SVGFEPointLightElement>;
 }) {
   return (
     <svg
