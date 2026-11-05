@@ -1,11 +1,10 @@
+
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Ms+Madi&display=swap");
 
 /* =========================================================
-   À PROPOS — REGISTRE DES ÉLÈVES
-   Palette locale à la section (la palette globale n'est pas touchée)
+   À PROPOS — FICHE D'ÉLÈVE DE POUDLARD
    ========================================================= */
 
-/* #a-propos.ab l'emporte sur les règles globales "section" */
 section#a-propos.ab {
   --ab-gold: #c5a66b;
   --ab-gold-light: #e4d0a1;
@@ -22,30 +21,16 @@ section#a-propos.ab {
   max-width: none;
   min-height: 0;
   margin: 0;
-  padding: clamp(100px, 13vh, 150px) 20px
-    clamp(100px, 13vh, 150px);
+  padding: clamp(100px, 13vh, 150px) 20px;
   overflow: hidden;
 
-  background:
-    radial-gradient(
-      ellipse at 50% 45%,
-      rgba(197, 166, 107, 0.12),
-      transparent 65%
-    ),
-    #f3eee5;
+  background: #f3eee5 !important;
 }
 
-/* Fondu vers la section suivante, claire */
+/* Suppression des anciens fonds décoratifs */
+section#a-propos.ab::before,
 section#a-propos.ab::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-  height: clamp(100px, 15vh, 170px);
-  background: linear-gradient(to bottom, transparent, var(--bg, #f5f3ef));
-  pointer-events: none;
+  content: none !important;
 }
 
 .ab *,
@@ -54,408 +39,254 @@ section#a-propos.ab::after {
   box-sizing: border-box;
 }
 
-.ab-defs {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-}
-
 /* =========================================================
-   BOUGIES FLOTTANTES
-   ========================================================= */
-
-.ab-backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.ab-candle {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: 11px;
-  height: 46px;
-  scale: var(--s);
-  opacity: 0.92;
-  animation: ab-bob var(--b) ease-in-out var(--cd) infinite;
-}
-
-/* Corps de la bougie */
-.ab-candle::before {
-  content: "";
-  position: absolute;
-  inset: 15px 0 0;
-  border-radius: 2px 2px 1px 1px;
-  background: linear-gradient(
-    90deg,
-    #b3a483,
-    #f5ead0 45%,
-    #d8c9a4 70%,
-    #a8987a
-  );
-}
-
-/* Cire fondue au sommet */
-.ab-candle::after {
-  content: "";
-  position: absolute;
-  top: 13px;
-  left: -1px;
-  right: -1px;
-  height: 6px;
-  border-radius: 50%;
-  background: #efe2c0;
-}
-
-.ab-flame {
-  position: absolute;
-  left: 50%;
-  top: -5px;
-  z-index: 2;
-  width: 8px;
-  height: 19px;
-  translate: -50% 0;
-  transform-origin: 50% 100%;
-  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
-  background: radial-gradient(
-    ellipse at 50% 75%,
-    #fff6c9 0%,
-    #ffd070 40%,
-    #ff9a30 75%,
-    transparent 100%
-  );
-  box-shadow:
-    0 0 16px 6px rgba(255, 170, 70, 0.45),
-    0 0 46px 18px rgba(255, 150, 60, 0.16);
-  animation: ab-flame 1.9s ease-in-out infinite;
-}
-
-.ab-candle:nth-child(even) .ab-flame {
-  animation-duration: 2.4s;
-  animation-delay: -0.8s;
-}
-
-@keyframes ab-bob {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-1.2deg);
-  }
-  50% {
-    transform: translateY(-11px) rotate(1.4deg);
-  }
-}
-
-@keyframes ab-flame {
-  0%,
-  100% {
-    transform: scale(1, 1) skewX(0deg);
-  }
-  25% {
-    transform: scale(0.93, 1.08) skewX(2deg);
-  }
-  50% {
-    transform: scale(1.05, 0.95) skewX(-1.5deg);
-  }
-  75% {
-    transform: scale(0.96, 1.05) skewX(1deg);
-  }
-}
-
-/* =========================================================
-   MISE EN PAGE
+   STRUCTURE
    ========================================================= */
 
 .ab-inner {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-  align-items: center;
-  gap: clamp(34px, 6vw, 84px);
-  max-width: 1180px;
+  width: min(100%, 1100px);
   margin: 0 auto;
-}
-
-.ab-col {
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(35px, 5vw, 55px);
 }
 
 /* =========================================================
-   LE PARCHEMIN
+   EN-TÊTE
    ========================================================= */
 
-.ab-sheet {
-  position: relative;
-  rotate: -0.6deg;
+.ab-heading {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.ab-paper {
-  position: absolute;
-  inset: 0;
-  border-radius: 6px;
-
-  background:
-    /* plis */
-    linear-gradient(
-      to bottom,
-      transparent calc(50% - 2px),
-      rgba(95, 62, 25, 0.13) calc(50% - 1px),
-      rgba(255, 250, 236, 0.45) 50%,
-      transparent calc(50% + 3px)
-    ),
-    /* fibres */
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .36 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .5 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
-    /* taches */
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='700' height='700'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='4' seed='8' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .62 0 0 0 0 .46 0 0 0 0 .22 0 0 0 .9 -.35'/></filter><rect width='100%25' height='100%25' filter='url(%23m)'/></svg>"),
-    /* coins brunis */
-      radial-gradient(ellipse 38% 30% at 0% 0%, rgba(135, 88, 38, 0.3), transparent 70%),
-    radial-gradient(ellipse 38% 30% at 100% 0%, rgba(135, 88, 38, 0.26), transparent 70%),
-    radial-gradient(ellipse 40% 32% at 0% 100%, rgba(135, 88, 38, 0.34), transparent 70%),
-    radial-gradient(ellipse 40% 32% at 100% 100%, rgba(135, 88, 38, 0.36), transparent 70%),
-    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(255, 252, 240, 0.6), transparent 75%),
-    var(--ab-parchment);
-
-  box-shadow:
-    inset 0 0 80px rgba(140, 95, 45, 0.4),
-    inset 0 0 14px rgba(100, 65, 25, 0.35);
-
-  filter: url(#ab-edge) drop-shadow(0 30px 34px rgba(0, 0, 0, 0.55))
-    drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35));
-}
-
-/* Signet en ruban bordeaux */
-.ab-ribbon {
-  position: absolute;
-  top: -8px;
-  right: clamp(34px, 10%, 90px);
-  z-index: 3;
-  width: 20px;
-  height: clamp(70px, 9vw, 96px);
-  background: linear-gradient(90deg, #5c1621, #8e2736 45%, #6a1b27);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%);
-}
-
-.ab-content {
-  position: relative;
-  padding: clamp(40px, 5.6vw, 66px) clamp(26px, 6.4vw, 78px)
-    clamp(40px, 5vw, 58px);
-
-  color: var(--ab-ink);
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(17px, 1.8vw, 20px);
-  font-weight: 500;
-  line-height: 1.7;
-}
-
-.ab-kicker {
+/* Catégorie : aucun fond, aucune bordure */
+section#a-propos.ab .ab-kicker {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0 0 8px;
-  color: var(--ab-gold-dark);
-  font-size: clamp(10px, 1.15vw, 12px);
+  justify-content: center;
+  gap: 14px;
+  width: fit-content;
+  margin: 0 auto 18px;
+  padding: 0 !important;
+
+  color: #8b6d3e;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3em;
+  line-height: 1.5;
   text-transform: uppercase;
 }
 
-.ab-kicker span,
-.ab-facts-title span {
-  flex: 1;
+.ab-kicker span {
+  display: block;
+  width: clamp(25px, 5vw, 55px);
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--ab-gold));
+  flex: none;
+  background: linear-gradient(90deg, transparent, #b89552);
 }
 
-.ab-kicker span:last-child,
-.ab-facts-title span:last-child {
-  background: linear-gradient(90deg, var(--ab-gold), transparent);
+.ab-kicker span:last-child {
+  background: linear-gradient(90deg, #b89552, transparent);
 }
 
-/* Les h2 globaux (rose, italique, soulignement) sont neutralisés ici */
-.ab .ab-title {
-  margin: 4px 0 18px;
-  color: var(--ab-ink);
+/* Titre */
+section#a-propos.ab #ab-title {
+  position: relative;
+  margin: 0 0 18px;
+  padding: 0;
+
+  color: #30221f !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
   font-family: "IM Fell English", "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(36px, 5vw, 58px);
   font-style: normal;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 1.08;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: none;
 }
 
-.ab .ab-title::after {
+section#a-propos.ab #ab-title::after {
   content: "";
   display: block;
-  width: min(210px, 55%);
+  width: 100px;
   height: 1px;
-  margin-top: 14px;
-  background: linear-gradient(90deg, var(--ab-wine), var(--ab-gold) 60%, transparent);
+  margin: 18px auto 0;
+  background: linear-gradient(90deg, transparent, #b89552, transparent);
   transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) 0.6s;
+  transform-origin: center;
+  transition: transform 1s ease 0.4s;
 }
 
-.ab .rv.in .ab-title::after {
+section#a-propos.ab .rv.in #ab-title::after {
   transform: scaleX(1);
 }
 
-.ab-p {
-  margin: 0 0 0.85em;
-  text-wrap: pretty;
-}
+.ab-intro {
+  max-width: 520px;
+  margin: 0 auto;
 
-/* Lettrine */
-.ab-p--first::first-letter {
-  float: left;
-  margin: 0.06em 0.1em 0 0;
-  color: var(--ab-wine);
-  font-family: "IM Fell English", Georgia, serif;
-  font-size: 3.7em;
-  line-height: 0.82;
-}
-
-/* ----- Fiche de l'élève ----- */
-
-.ab-facts {
-  max-width: 480px;
-  margin-top: clamp(18px, 2.6vw, 26px);
-}
-
-.ab-facts-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 6px;
-  color: var(--ab-gold-dark);
-  font-size: clamp(10px, 1.1vw, 11.5px);
-  font-weight: 600;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-}
-
-.ab-facts dl {
-  margin: 0;
-}
-
-.ab-facts dl > div {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 3px 0;
-}
-
-.ab-facts dt {
-  display: flex;
-  flex: 1;
-  align-items: baseline;
-  gap: 8px;
-  color: var(--ab-gold-dark);
-  font-size: 0.8em;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.ab-facts dt::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px dotted rgba(138, 106, 51, 0.7);
-  transform: translateY(-3px);
-  transition: border-color 0.3s ease;
-}
-
-.ab-facts dd {
-  margin: 0;
-  color: var(--ab-ink);
+  color: #796b60;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(17px, 2vw, 20px);
   font-style: italic;
-  transition: color 0.3s ease;
-}
-
-.ab-facts dl > div:hover dd {
-  color: var(--ab-wine);
-}
-
-.ab-facts dl > div:hover dt::after {
-  border-bottom-style: solid;
-  border-color: var(--ab-gold);
-}
-
-/* ----- Plume ----- */
-
-.ab-quill {
-  position: absolute;
-  right: clamp(18px, 4vw, 46px);
-  bottom: clamp(18px, 3vw, 34px);
-  width: clamp(110px, 17vw, 170px);
-  height: auto;
-  rotate: -8deg;
-  opacity: 0.92;
-  pointer-events: none;
-  filter: drop-shadow(1px 3px 2px rgba(60, 35, 10, 0.35));
+  line-height: 1.6;
 }
 
 /* =========================================================
-   LE PORTRAIT ENCHANTÉ
+   CARTE D'IDENTITÉ
    ========================================================= */
 
-.ab-col--portrait {
-  display: flex;
-  justify-content: center;
-}
-
-.ab-hang {
+.ab-card {
   position: relative;
-  width: min(100%, 370px);
-  padding-top: 46px;
-  transform-origin: 50% 0;
-  animation: ab-sway 9s ease-in-out infinite;
-}
+  width: min(100%, 900px);
+  padding: clamp(25px, 4vw, 42px);
 
-@keyframes ab-sway {
-  0%,
-  100% {
-    rotate: 0.8deg;
-  }
-  50% {
-    rotate: -0.8deg;
-  }
-}
+  color: var(--ab-text);
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(197, 166, 107, 0.10),
+      transparent 60%
+    ),
+    linear-gradient(145deg, #292220, #1d1918 70%);
 
-.ab-cord {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50px;
-  overflow: visible;
-}
-
-.ab-nail {
-  position: absolute;
-  top: -2px;
-  left: 50%;
-  width: 11px;
-  height: 11px;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f6e2a8, #a47f43 60%, #4a3112);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-}
-
-.ab-tilt {
-  position: relative;
-}
-
-/* ----- Cadre doré ----- */
-
-.ab-frame {
-  position: relative;
-  padding: clamp(15px, 2.3vw, 23px);
+  border: 1px solid rgba(197, 166, 107, 0.65);
   border-radius: 4px;
+
+  box-shadow:
+    0 24px 60px rgba(45, 31, 24, 0.17),
+    0 5px 16px rgba(45, 31, 24, 0.08),
+    inset 0 0 0 5px rgba(197, 166, 107, 0.035);
+
+  overflow: hidden;
+}
+
+/* Double bordure intérieure */
+.ab-card::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  z-index: 0;
+  border: 1px solid rgba(197, 166, 107, 0.22);
+  pointer-events: none;
+}
+
+.ab-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   HAUT DE LA CARTE
+   ========================================================= */
+
+.ab-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(197, 166, 107, 0.3);
+}
+
+.ab-school-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  color: var(--ab-gold-light);
+  text-align: center;
+}
+
+.ab-school-mark svg {
+  width: 29px;
+  height: 29px;
+  margin-bottom: 3px;
+}
+
+.ab-school-mark span {
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 19px;
+  letter-spacing: 0.17em;
+}
+
+.ab-school-mark small {
+  color: var(--ab-muted);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+}
+
+.ab-card-number {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.ab-card-number span {
+  color: var(--ab-muted);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.17em;
+}
+
+.ab-card-number strong {
+  color: var(--ab-gold);
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+/* =========================================================
+   CONTENU PRINCIPAL
+   ========================================================= */
+
+.ab-card-main {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.5fr);
+  align-items: center;
+  gap: clamp(30px, 5vw, 60px);
+
+  padding: clamp(30px, 4vw, 45px) 0;
+}
+
+/* =========================================================
+   CADRE PHOTO
+   ========================================================= */
+
+.ab-photo-column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.ab-photo-frame {
+  position: relative;
+  width: min(100%, 230px);
+  aspect-ratio: 4 / 5;
+  padding: 8px;
 
   background: linear-gradient(
     135deg,
@@ -467,266 +298,313 @@ section#a-propos.ab::after {
     #e8cd8b 100%
   );
 
+  border-radius: 3px;
+
   box-shadow:
-    0 32px 52px -18px rgba(0, 0, 0, 0.8),
-    0 8px 14px rgba(0, 0, 0, 0.45),
-    inset 0 0 0 1.5px rgba(255, 238, 190, 0.65),
-    inset 0 0 0 5px rgba(70, 44, 14, 0.55),
-    inset 0 0 0 7px rgba(240, 214, 150, 0.35);
+    0 18px 35px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 238, 190, 0.65),
+    inset 0 0 0 4px rgba(70, 44, 14, 0.4);
 }
 
-/* Perles de la moulure */
-.ab-frame::before {
+.ab-photo-frame::before {
   content: "";
   position: absolute;
-  inset: 9px;
-  border: 2px dotted rgba(60, 36, 10, 0.55);
-  border-radius: 2px;
-  pointer-events: none;
-}
-
-.ab-corner {
-  position: absolute;
+  inset: 5px;
   z-index: 2;
-  width: clamp(24px, 3.6vw, 34px);
-  height: auto;
-  color: #3b2410;
+  border: 1px dotted rgba(60, 36, 10, 0.6);
   pointer-events: none;
 }
 
-.ab-corner--tl {
-  top: 3px;
-  left: 3px;
-}
-
-.ab-corner--tr {
-  top: 3px;
-  right: 3px;
-  rotate: 90deg;
-}
-
-.ab-corner--br {
-  right: 3px;
-  bottom: 3px;
-  rotate: 180deg;
-}
-
-.ab-corner--bl {
-  bottom: 3px;
-  left: 3px;
-  rotate: 270deg;
-}
-
-.ab-canvas {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: #2a1a10;
-  box-shadow:
-    0 0 0 2px rgba(40, 22, 6, 0.85),
-    0 0 0 3px rgba(255, 230, 170, 0.35);
-}
-
-.ab-canvas img {
+.ab-photo-frame img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 22%;
-  filter: sepia(0.16) contrast(1.03) saturate(0.92);
-  transform-origin: 50% 40%;
-  animation: ab-breathe 11s ease-in-out infinite;
+
+  border: 2px solid rgba(40, 25, 12, 0.85);
+
+  filter: sepia(0.12) contrast(1.04) saturate(0.94);
+  transition:
+    filter 0.5s ease,
+    transform 0.8s ease;
 }
 
-@keyframes ab-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.03);
-  }
+.ab-photo-frame:hover img {
+  filter: sepia(0) contrast(1.05) saturate(1);
+  transform: scale(1.015);
 }
 
-/* Vignettage de la peinture */
-.ab-canvas::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 42%,
-    transparent 52%,
-    rgba(32, 16, 6, 0.55) 100%
-  );
-  pointer-events: none;
-}
-
-/* Reflet du verre qui balaie le portrait */
-.ab-glass {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(
-    115deg,
-    transparent 38%,
-    rgba(255, 245, 225, 0.17) 48%,
-    rgba(255, 245, 225, 0.05) 53%,
-    transparent 62%
-  );
-  background-size: 260% 100%;
-  background-position: 130% 0;
-  mix-blend-mode: screen;
-  pointer-events: none;
-  animation: ab-glare 9s ease-in-out 2.5s infinite;
-}
-
-@keyframes ab-glare {
-  0%,
-  55% {
-    background-position: 130% 0;
-  }
-  80%,
-  100% {
-    background-position: -30% 0;
-  }
-}
-
-.ab-ph {
+.ab-photo-placeholder {
   display: grid;
-  place-content: center;
-  gap: 6px;
+  width: 100%;
   height: 100%;
+  place-items: center;
+
   color: var(--ab-gold-light);
+  background: #332823;
+  border: 2px solid rgba(40, 25, 12, 0.85);
+
   font-family: "IM Fell English", Georgia, serif;
+  font-size: 65px;
+}
+
+.ab-photo-caption {
+  margin-top: 12px;
+  color: var(--ab-muted);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
   text-align: center;
 }
 
-.ab-ph span {
-  font-size: clamp(56px, 9vw, 84px);
-  line-height: 1;
-}
-
-.ab-ph small {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 15px;
-  font-style: italic;
-  opacity: 0.75;
-}
-
-/* ----- Étiquette « hello ! » ----- */
-
-.ab-tag {
+/* Sceau de Poudlard */
+.ab-student-seal {
   position: absolute;
-  top: 18%;
-  right: -16px;
-  z-index: 4;
-  padding: 6px 16px 8px 24px;
-  border-radius: 3px 12px 12px 3px;
-  rotate: 7deg;
-  transform-origin: 0 50%;
+  right: 0;
+  bottom: 22px;
 
-  color: var(--ab-wine);
-  font-family: "Ms Madi", cursive;
-  font-size: clamp(1.5rem, 3vw, 1.9rem);
-  line-height: 1;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
 
+  color: #f0d8a5;
   background:
-    radial-gradient(circle at 10px 50%, #2a1a10 0 3px, rgba(60, 36, 10, 0.5) 3px 4.5px, transparent 5px),
-    linear-gradient(135deg, #f7edd6, #e6d4ac);
-  box-shadow:
-    0 6px 12px rgba(0, 0, 0, 0.45),
-    inset 0 0 12px rgba(140, 95, 45, 0.3);
-  animation: ab-tag-swing 6s ease-in-out infinite;
-}
+    radial-gradient(circle at 35% 30%, #a9434d, #792633 65%, #50151e);
 
-@keyframes ab-tag-swing {
-  0%,
-  100% {
-    rotate: 7deg;
-  }
-  50% {
-    rotate: 2deg;
-  }
-}
-
-/* ----- Plaque gravée ----- */
-
-.ab-plaque {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-  width: 78%;
-  margin: 18px auto 0;
-  padding: 9px 14px 10px;
-  border-radius: 3px;
-  text-align: center;
-
-  color: #3b2410;
-  background: linear-gradient(135deg, #ecd391, #b48d4c 45%, #d9bd7d 70%, #9a7639);
-  box-shadow:
-    0 8px 14px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(255, 238, 190, 0.6),
-    inset 0 0 0 3px rgba(70, 44, 14, 0.35);
-}
-
-/* Vis de la plaque */
-.ab-plaque::before,
-.ab-plaque::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 5px;
-  height: 5px;
-  translate: 0 -50%;
+  border: 2px solid #c5a66b;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f6e2a8, #6a4a1c);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 2px rgba(255, 230, 180, 0.15);
+
+  transform: rotate(10deg);
 }
 
-.ab-plaque::before {
-  left: 8px;
-}
-
-.ab-plaque::after {
-  right: 8px;
-}
-
-.ab-plaque strong {
-  font-family: "IM Fell English", Georgia, serif;
-  font-size: clamp(14px, 1.7vw, 17px);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.ab-plaque span {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(11px, 1.3vw, 13px);
-  font-style: italic;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+.ab-student-seal svg {
+  width: 23px;
+  height: 23px;
 }
 
 /* =========================================================
-   APPARITION (déclenchée par la classe .in du système .rv)
+   INFORMATIONS PERSONNELLES
    ========================================================= */
 
-.ab .rv.in .ab-ink {
-  animation: ab-ink 0.95s ease-out calc(var(--ab-d, 0s) + 0.25s) both;
+.ab-information {
+  min-width: 0;
+  color: var(--ab-text);
+  font-family: "Cormorant Garamond", Georgia, serif;
 }
 
-@keyframes ab-ink {
+.ab-label {
+  display: block;
+  margin-bottom: 10px;
+
+  color: var(--ab-gold);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.23em;
+}
+
+.ab-information h3 {
+  margin: 0 0 16px;
+  padding: 0;
+
+  color: var(--ab-gold-light) !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: clamp(30px, 4vw, 43px);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.ab-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px;
+
+  color: var(--ab-gold);
+}
+
+.ab-divider span {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(197, 166, 107, 0.65));
+}
+
+.ab-divider span:last-child {
+  background: linear-gradient(90deg, rgba(197, 166, 107, 0.65), transparent);
+}
+
+.ab-divider svg {
+  width: 15px;
+  height: 15px;
+}
+
+.ab-information p {
+  margin: 0 0 15px;
+
+  color: var(--ab-muted);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(16px, 1.7vw, 19px);
+  font-weight: 500;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.ab-information p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   BAS DE LA CARTE
+   ========================================================= */
+
+.ab-card-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+
+  padding-top: 23px;
+  border-top: 1px solid rgba(197, 166, 107, 0.3);
+}
+
+.ab-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.ab-detail span {
+  color: var(--ab-gold);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+}
+
+.ab-detail strong {
+  color: var(--ab-text);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   ORNEMENTS AUX COINS
+   ========================================================= */
+
+.ab-card-corner {
+  position: absolute;
+  z-index: 2;
+  width: 17px;
+  height: 17px;
+  border-color: var(--ab-gold);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.ab-card-corner--tl {
+  top: 3px;
+  left: 3px;
+  border-width: 1px 0 0 1px;
+}
+
+.ab-card-corner--tr {
+  top: 3px;
+  right: 3px;
+  border-width: 1px 1px 0 0;
+}
+
+.ab-card-corner--bl {
+  bottom: 3px;
+  left: 3px;
+  border-width: 0 0 1px 1px;
+}
+
+.ab-card-corner--br {
+  right: 3px;
+  bottom: 3px;
+  border-width: 0 1px 1px 0;
+}
+
+/* =========================================================
+   PIED DE SECTION
+   ========================================================= */
+
+.ab-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  width: min(100%, 900px);
+  padding: 0 4px;
+
+  color: #9a8669;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+}
+
+/* =========================================================
+   ANIMATIONS D'APPARITION
+   ========================================================= */
+
+.ab .rv.in .ab-card {
+  animation: ab-card-appear 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes ab-card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.ab .rv.in .ab-information > * {
+  animation: ab-text-appear 0.7s ease both;
+}
+
+.ab .rv.in .ab-information > *:nth-child(1) {
+  animation-delay: 0.15s;
+}
+
+.ab .rv.in .ab-information > *:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.ab .rv.in .ab-information > *:nth-child(3) {
+  animation-delay: 0.35s;
+}
+
+.ab .rv.in .ab-information > *:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+@keyframes ab-text-appear {
   from {
     opacity: 0;
     transform: translateY(10px);
-    filter: blur(4px);
   }
+
   to {
     opacity: 1;
-    transform: none;
-    filter: blur(0);
+    transform: translateY(0);
   }
 }
 
@@ -734,18 +612,22 @@ section#a-propos.ab::after {
    TABLETTE
    ========================================================= */
 
-@media (max-width: 900px) {
-  .ab-inner {
-    grid-template-columns: 1fr;
-    gap: 46px;
+@media (max-width: 760px) {
+  section#a-propos.ab {
+    padding: 90px 22px;
   }
 
-  .ab-hang {
-    width: min(78%, 340px);
+  .ab-card-main {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 28px;
   }
 
-  .ab-quill {
-    width: clamp(100px, 18vw, 140px);
+  .ab-photo-frame {
+    width: 185px;
+  }
+
+  .ab-information p {
+    font-size: 17px;
   }
 }
 
@@ -754,28 +636,124 @@ section#a-propos.ab::after {
    ========================================================= */
 
 @media (max-width: 560px) {
-  .ab-content {
-    padding: 34px 22px 34px;
+  section#a-propos.ab {
+    padding: 75px 16px;
+  }
+
+  .ab-inner {
+    gap: 30px;
   }
 
   .ab-kicker {
-    letter-spacing: 0.2em;
+    gap: 9px;
+    font-size: 10px !important;
+    letter-spacing: 0.2em !important;
   }
 
-  .ab-quill {
-    display: none;
+  section#a-propos.ab #ab-title {
+    font-size: clamp(32px, 9vw, 43px);
   }
 
-  .ab-candle:nth-child(n + 6) {
-    display: none;
+  .ab-intro {
+    font-size: 17px;
   }
 
-  .ab-hang {
-    width: min(86%, 320px);
+  .ab-card {
+    padding: 23px 19px;
   }
 
-  .ab-tag {
-    right: -8px;
+  .ab-card-top {
+    padding-bottom: 17px;
+  }
+
+  .ab-school-mark span {
+    font-size: 16px;
+  }
+
+  .ab-card-number span {
+    font-size: 8px;
+  }
+
+  .ab-card-number strong {
+    font-size: 18px;
+  }
+
+  .ab-card-main {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 27px 0;
+  }
+
+  .ab-photo-frame {
+    width: min(65%, 210px);
+  }
+
+  .ab-student-seal {
+    right: calc(50% - 115px);
+  }
+
+  .ab-information h3 {
+    font-size: 34px;
+    text-align: center;
+  }
+
+  .ab-label {
+    text-align: center;
+  }
+
+  .ab-information p {
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .ab-card-bottom {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .ab-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .ab-detail strong {
+    text-align: right;
+  }
+
+  .ab-footer {
+    flex-direction: column;
+    gap: 7px;
+    text-align: center;
+    font-size: 9px;
+  }
+}
+
+/* =========================================================
+   PETITS ÉCRANS
+   ========================================================= */
+
+@media (max-width: 360px) {
+  .ab-card {
+    padding: 20px 14px;
+  }
+
+  .ab-school-mark small {
+    font-size: 8px;
+  }
+
+  .ab-photo-frame {
+    width: 75%;
+  }
+
+  .ab-detail {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .ab-detail strong {
+    text-align: left;
   }
 }
 
@@ -784,8 +762,12 @@ section#a-propos.ab::after {
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .ab-candle,
-  .ab-hang {
-    animation: none;
+  .ab *,
+  .ab *::before,
+  .ab *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
