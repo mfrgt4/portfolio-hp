@@ -3,6 +3,7 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
+  useState,
   type ReactNode,
   type Ref,
 } from "react";
@@ -88,9 +89,34 @@ export default function PortfolioEntrance({
   const leftDoorRef = useRef<HTMLDivElement>(null);
   const rightDoorRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  const musicRef = useRef<HTMLIFrameElement>(null);
 
-  // Plein écran réel : quel que soit le parent
-  // (centré, décalé, max-width...)
+  const [doorsOpen, setDoorsOpen] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(true);
+
+  // Commandes du lecteur YouTube
+  const controlMusic = (command: "playVideo" | "pauseVideo") => {
+    musicRef.current?.contentWindow?.postMessage(
+      JSON.stringify({
+        event: "command",
+        func: command,
+        args: [],
+      }),
+      "*",
+    );
+  };
+
+  const toggleMusic = () => {
+    if (musicPlaying) {
+      controlMusic("pauseVideo");
+      setMusicPlaying(false);
+    } else {
+      controlMusic("playVideo");
+      setMusicPlaying(true);
+    }
+  };
+
+  // Plein écran réel
   useLayoutEffect(() => {
     const el = bleedRef.current;
     if (!el) return;
@@ -123,6 +149,7 @@ export default function PortfolioEntrance({
     };
   }, []);
 
+  // Animation des portes
   useEffect(() => {
     const root = rootRef.current;
     const track = trackRef.current;
@@ -154,10 +181,12 @@ export default function PortfolioEntrance({
           end: "bottom bottom",
           scrub: 0.5,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            setDoorsOpen(self.progress >= 0.98);
+          },
         },
       });
 
-      // Disparition du texte
       intro.to(
         title,
         {
@@ -170,7 +199,6 @@ export default function PortfolioEntrance({
         0,
       );
 
-      // La barre centrale disparaît dès que les portes s'ouvrent
       if (seam) {
         intro.to(
           seam,
@@ -183,7 +211,6 @@ export default function PortfolioEntrance({
         );
       }
 
-      // La porte gauche coulisse vers la gauche
       intro.to(
         leftDoor,
         {
@@ -194,7 +221,6 @@ export default function PortfolioEntrance({
         0.15,
       );
 
-      // La porte droite coulisse vers la droite
       intro.to(
         rightDoor,
         {
@@ -217,6 +243,16 @@ export default function PortfolioEntrance({
 
   return (
     <div className="ip-bleed" ref={bleedRef}>
+      {/* Lecteur YouTube invisible */}
+      <iframe
+        ref={musicRef}
+        className="ip-music-player"
+        src="https://www.youtube.com/embed/UuPb1J_RCJM?autoplay=1&controls=0&loop=1&playlist=UuPb1J_RCJM&enablejsapi=1&playsinline=1"
+        title="Musique du portfolio"
+        allow="autoplay; encrypted-media"
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
+
       <div className="ip-track" ref={trackRef}>
         <section
           className="ip"
@@ -264,14 +300,30 @@ export default function PortfolioEntrance({
             </div>
 
             <p className="ip-scroll-hint">
-              <span>
-                Faites défiler pour ouvrir les portes
-              </span>
+              <span>Faites défiler pour ouvrir les portes</span>
               <i>↓</i>
             </p>
           </div>
         </section>
       </div>
+
+      {/* Bouton musique après ouverture */}
+      {doorsOpen && (
+        <button
+          type="button"
+          className="ip-music-toggle"
+          onClick={toggleMusic}
+          aria-label={musicPlaying ? "Couper la musique" : "Activer la musique"}
+          title={musicPlaying ? "Couper la musique" : "Activer la musique"}
+        >
+          <span className="ip-music-icon">
+            {musicPlaying ? "♫" : "♪"}
+          </span>
+          <span className="ip-music-label">
+            {musicPlaying ? "Musique activée" : "Musique désactivée"}
+          </span>
+        </button>
+      )}
     </div>
   );
 }

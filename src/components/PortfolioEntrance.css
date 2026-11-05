@@ -924,3 +924,88 @@ section.ip {
     animation: none;
   }
 }
+
+
+/* =========================================
+   MUSIQUE — LECTEUR YOUTUBE ET BOUTON
+   ========================================= */
+
+.ip-music-player {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: 0;
+  left: -10px;
+  bottom: 0;
+}
+
+.ip-music-toggle {
+  position: fixed;
+  z-index: 9999;
+  right: 25px;
+  bottom: 25px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 17px;
+
+  color: #e8d2a6;
+  background: linear-gradient(145deg, #382018, #1c100c);
+  border: 1px solid #a98248;
+  border-radius: 3px;
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 2px rgba(169, 130, 72, 0.12);
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.ip-music-toggle:hover {
+  background: linear-gradient(145deg, #572b2b, #291411);
+  border-color: #d0ad70;
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 7px 22px rgba(0, 0, 0, 0.45),
+    0 0 12px rgba(169, 130, 72, 0.15);
+}
+
+.ip-music-icon {
+  color: #d0ad70;
+  font-family: Georgia, serif;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.ip-music-label {
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .ip-music-toggle {
+    right: 15px;
+    bottom: 15px;
+    padding: 11px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ip-music-toggle {
+    transition: none;
+  }
+}
