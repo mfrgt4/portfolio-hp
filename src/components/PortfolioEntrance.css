@@ -1,25 +1,8 @@
 /* =========================================
    INTRO — PORTES MASSIVES DE POUDLARD
+   Calque fixe plein écran : un clic sur les portes
+   lance l'ouverture, puis le calque disparaît.
    ========================================= */
-
-/* Wrapper : simplement 100% du parent (qui est déjà pleine largeur) */
-.ip-bleed {
-  position: relative;
-  width: 100%;
-  margin: 0;
-}
-
-/* Piste de scroll : remplace le pin GSAP (sticky, sans pin-spacer) */
-.ip-track {
-  position: relative;
-  width: 100%;
-}
-
-@media (min-width: 901px) {
-  .ip-track {
-    height: calc(100svh + 1400px);
-  }
-}
 
 .ip {
   --ip-wood-dark: #160e0b;
@@ -30,32 +13,23 @@
   --ip-gold-light: #d0ad70;
   --ip-parchment: #f0e7d5;
 
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+  position: fixed;
+  inset: 0;
   z-index: 60;
-  isolation: isolate;
+  overflow: hidden;
   background: transparent;
-  perspective: 2200px;
+  cursor: pointer;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Neutralise les règles globales de styles.css :
-   - section { max-width:1180px; margin:0 auto; padding:120px 24px 50px }
-   - section:not(#accueil) { min-height:100svh; display:flex; padding:96px 0 }
-   qui rétrécissaient l'intro à 1180px. */
-section.ip {
-  max-width: none !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: block !important;
-  min-height: 0 !important;
+.ip.is-opening {
+  cursor: default;
+}
+
+.ip:focus-visible {
+  outline: 2px solid var(--ip-gold-light);
+  outline-offset: -8px;
 }
 
 .ip *,
@@ -64,29 +38,9 @@ section.ip {
   box-sizing: border-box;
 }
 
-/* =========================================
-   FOND APRÈS OUVERTURE
-   ========================================= */
-
-.ip-wall {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-
-  background: transparent;
-}
-
-.ip-content {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.ip-content > * {
-  min-height: 100%;
+/* Le portfolio, derrière les portes (légère mise au point à l'ouverture) */
+.ip-page {
+  position: relative;
 }
 
 /* =========================================
@@ -108,8 +62,9 @@ section.ip {
 
   overflow: hidden;
 
-  perspective: none;
-  transform: none;
+  perspective: 2200px;
+  perspective-origin: 50% 50%;
+  will-change: transform;
 
   pointer-events: none;
 }
@@ -119,9 +74,26 @@ section.ip {
   z-index: 0;
   inset: 0;
 
-  background: transparent;
+  /* Lumière chaude qui entre par la fente puis inonde la pièce */
+  background:
+    radial-gradient(
+      ellipse 60% 78% at 50% 50%,
+      rgba(255, 248, 228, 0.98) 0%,
+      rgba(255, 226, 165, 0.85) 28%,
+      rgba(255, 204, 125, 0.35) 55%,
+      transparent 78%
+    ),
+    linear-gradient(
+      90deg,
+      transparent 38%,
+      rgba(255, 241, 208, 0.95) 50%,
+      transparent 62%
+    );
 
-  opacity: 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: scaleX(0.15);
+  pointer-events: none;
 }
 
 /* =========================================
@@ -147,12 +119,12 @@ section.ip {
 }
 
 .ip-door--left {
-  transform-origin: center center;
+  transform-origin: 0% 50%;
   border-right: 2px solid #100906;
 }
 
 .ip-door--right {
-  transform-origin: center center;
+  transform-origin: 100% 50%;
   border-left: 2px solid #100906;
 }
 
@@ -848,70 +820,12 @@ section.ip {
 }
 
 /* =========================================
-   MOBILE — PAS D'INTRODUCTION
+   TABLETTE / MOBILE — PAS D'INTRODUCTION
    ========================================= */
 
-@media (max-width: 560px) {
+@media (max-width: 900px) {
   .ip {
-    position: relative;
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    margin-left: 0;
-    overflow: visible;
-    perspective: none;
-    isolation: auto;
-    z-index: auto;
-  }
-
-  .ip-wall,
-  .ip-stage,
-  .ip-title {
     display: none !important;
-  }
-
-  .ip-content {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    height: auto;
-    min-height: 100svh;
-    overflow: visible;
-    z-index: auto;
-  }
-}
-
-/* =========================================
-   TABLETTE — CONTENU SANS INTRO
-   ========================================= */
-
-@media (min-width: 561px) and (max-width: 900px) {
-  .ip {
-    position: relative;
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    margin-left: 0;
-    overflow: visible;
-    perspective: none;
-    isolation: auto;
-    z-index: auto;
-  }
-
-  .ip-wall,
-  .ip-stage,
-  .ip-title {
-    display: none !important;
-  }
-
-  .ip-content {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    height: auto;
-    min-height: 100svh;
-    overflow: visible;
-    z-index: auto;
   }
 }
 
@@ -1008,4 +922,37 @@ section.ip {
   .ip-music-toggle {
     transition: none;
   }
+}
+
+
+/* =========================================
+   OUVERTURE RÉALISTE
+   ========================================= */
+
+/* Voile sombre : la face du battant s'assombrit quand il s'éloigne de la lumière */
+.ip-door-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.9),
+      rgba(6, 3, 2, 0.95)
+    );
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Survol : les poignées accrochent la lumière */
+.ip-handle-plate,
+.ip-handle-neck,
+.ip-handle-ring {
+  transition: filter 0.4s ease;
+}
+
+.ip:not(.is-opening):hover .ip-handle-plate,
+.ip:not(.is-opening):hover .ip-handle-neck,
+.ip:not(.is-opening):hover .ip-handle-ring {
+  filter: brightness(1.3) saturate(1.1);
 }

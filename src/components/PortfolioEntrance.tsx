@@ -1,17 +1,16 @@
-
 import {
   useEffect,
   useLayoutEffect,
   useRef,
   useState,
+  type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
   type Ref,
 } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./PortfolioEntrance.css";
 
-gsap.registerPlugin(ScrollTrigger);
+const DESKTOP = "(min-width: 901px)";
 
 function DoorPanel({
   side,
@@ -71,6 +70,7 @@ function DoorPanel({
         <i />
       </div>
 
+      <div className="ip-door-shade" />
       <div className="ip-door-side-shadow" />
     </div>
   );
@@ -80,62 +80,41 @@ type PortfolioEntranceProps = {
   children: ReactNode;
 };
 
+type Phase = "closed" | "opening" | "open";
+
 export default function PortfolioEntrance({
   children,
 }: PortfolioEntranceProps) {
-  const bleedRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const rootRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
   const leftDoorRef = useRef<HTMLDivElement>(null);
   const rightDoorRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
   const musicRef = useRef<HTMLIFrameElement>(null);
-  const musicStartedRef = useRef(false);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const openingRef = useRef(false);
 
-  const [doorsOpen, setDoorsOpen] = useState(false);
+  // Sous 900px : pas d'intro, le portfolio est directement visible
+  const [phase, setPhase] = useState<Phase>(() =>
+    typeof window !== "undefined" && window.matchMedia(DESKTOP).matches
+      ? "closed"
+      : "open",
+  );
   const [musicPlaying, setMusicPlaying] = useState(false);
 
-  // Commandes du lecteur YouTube
+  const doorsOpen = phase === "open";
+
+  // ---------- Musique ----------
+
   const controlMusic = (command: "playVideo" | "pauseVideo") => {
     musicRef.current?.contentWindow?.postMessage(
-      JSON.stringify({
-        event: "command",
-        func: command,
-        args: [],
-      }),
+      JSON.stringify({ event: "command", func: command, args: [] }),
       "*",
     );
   };
 
-  // Démarrage de la musique au premier scroll
-  useEffect(() => {
-    const startMusic = () => {
-      if (musicStartedRef.current) return;
-
-      musicStartedRef.current = true;
-      controlMusic("playVideo");
-      setMusicPlaying(true);
-
-      window.removeEventListener("scroll", startMusic);
-      window.removeEventListener("wheel", startMusic);
-      window.removeEventListener("touchmove", startMusic);
-      window.removeEventListener("keydown", startMusic);
-    };
-
-    window.addEventListener("scroll", startMusic, { passive: true });
-    window.addEventListener("wheel", startMusic, { passive: true });
-    window.addEventListener("touchmove", startMusic, { passive: true });
-    window.addEventListener("keydown", startMusic);
-
-    return () => {
-      window.removeEventListener("scroll", startMusic);
-      window.removeEventListener("wheel", startMusic);
-      window.removeEventListener("touchmove", startMusic);
-      window.removeEventListener("keydown", startMusic);
-    };
-  }, []);
-
-  // Bouton lecture / pause
   const toggleMusic = () => {
     if (musicPlaying) {
       controlMusic("pauseVideo");
@@ -143,137 +122,203 @@ export default function PortfolioEntrance({
     } else {
       controlMusic("playVideo");
       setMusicPlaying(true);
-      musicStartedRef.current = true;
     }
   };
 
-  // Plein écran réel
-  useLayoutEffect(() => {
-    const el = bleedRef.current;
-    if (!el) return;
+  // ---------- Ouverture au clic ----------
 
-    const fit = () => {
-      el.style.marginLeft = "0px";
-      el.style.width = "";
-
-      if (window.innerWidth <= 900) return;
-
-      const left = el.getBoundingClientRect().left;
-      el.style.marginLeft = `${-left}px`;
-      el.style.width = `${document.documentElement.clientWidth}px`;
-    };
-
-    fit();
-
-    window.addEventListener("resize", fit);
-
-    const ro = new ResizeObserver(() => {
-      fit();
-      ScrollTrigger.refresh();
-    });
-
-    if (el.parentElement) ro.observe(el.parentElement);
-
-    return () => {
-      window.removeEventListener("resize", fit);
-      ro.disconnect();
-    };
-  }, []);
-
-  // Animation des portes
-  useEffect(() => {
-    const root = rootRef.current;
-    const track = trackRef.current;
+  const openDoors = () => {
+    const overlay = overlayRef.current;
+    const stage = stageRef.current;
+    const glow = glowRef.current;
     const leftDoor = leftDoorRef.current;
     const rightDoor = rightDoorRef.current;
     const title = titleRef.current;
-    const seam = root?.querySelector<HTMLElement>(".ip-center-seam");
+    const page = pageRef.current;
 
-    if (!root || !track || !leftDoor || !rightDoor || !title) return;
+    if (openingRef.current) return;
+    if (!overlay || !stage || !glow || !leftDoor || !rightDoor || !title) {
+      return;
+    }
 
-    const media = gsap.matchMedia();
+    openingRef.current = true;
+    setPhase("opening");
 
-    media.add("(min-width: 901px)", () => {
-      gsap.set([leftDoor, rightDoor], {
-        xPercent: 0,
-        rotationY: 0,
-        force3D: true,
-      });
+    // Le clic est un geste utilisateur : le navigateur autorise la musique.
+    // Second appel au cas où le lecteur n'était pas encore prêt.
+    controlMusic("playVideo");
+    window.setTimeout(() => controlMusic("playVideo"), 1200);
+    setMusicPlaying(true);
 
-      gsap.set(title, {
-        autoAlpha: 1,
-        scale: 1,
-      });
-
-      const intro = gsap.timeline({
-        scrollTrigger: {
-          trigger: track,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.5,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            setDoorsOpen(self.progress >= 0.98);
-          },
-        },
-      });
-
-      intro.to(
-        title,
-        {
-          autoAlpha: 0,
-          scale: 0.92,
-          y: -25,
-          duration: 0.35,
-          ease: "power2.out",
-        },
-        0,
-      );
-
-      if (seam) {
-        intro.to(
-          seam,
-          {
-            autoAlpha: 0,
-            duration: 0.1,
-            ease: "none",
-          },
-          0.15,
-        );
-      }
-
-      intro.to(
-        leftDoor,
-        {
-          xPercent: -105,
-          duration: 1,
-          ease: "power2.inOut",
-        },
-        0.15,
-      );
-
-      intro.to(
-        rightDoor,
-        {
-          xPercent: 105,
-          duration: 1,
-          ease: "power2.inOut",
-        },
-        0.15,
-      );
-
-      const refreshId = window.requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
-
-      return () => window.cancelAnimationFrame(refreshId);
+    const tl = gsap.timeline({
+      onComplete: () => setPhase("open"),
     });
+    timelineRef.current = tl;
 
-    return () => media.revert();
+    // Accessibilité : simple fondu si l'animation est réduite
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      tl.to(overlay, { autoAlpha: 0, duration: 0.5, ease: "none" });
+      return;
+    }
+
+    const seam = overlay.querySelector<HTMLElement>(".ip-center-seam");
+    const rings = overlay.querySelectorAll<HTMLElement>(".ip-handle-ring");
+    const shades = overlay.querySelectorAll<HTMLElement>(".ip-door-shade");
+
+    // 1. Le texte s'efface, on pousse : les anneaux se balancent
+    tl.to(
+      title,
+      {
+        autoAlpha: 0,
+        scale: 0.94,
+        y: -20,
+        duration: 0.7,
+        ease: "power2.in",
+      },
+      0,
+    );
+
+    tl.to(
+      rings,
+      {
+        rotation: 10,
+        transformOrigin: "50% 0%",
+        duration: 0.14,
+        yoyo: true,
+        repeat: 5,
+        ease: "sine.inOut",
+      },
+      0,
+    );
+
+    // 2. Les battants cèdent légèrement : un filet de lumière apparaît
+    tl.to(leftDoor, { rotationY: 1.6, duration: 0.5, ease: "power2.out" }, 0.15);
+    tl.to(
+      rightDoor,
+      { rotationY: -1.6, duration: 0.5, ease: "power2.out" },
+      0.15,
+    );
+    tl.to(
+      glow,
+      { autoAlpha: 0.55, scaleX: 0.3, duration: 0.5, ease: "power2.out" },
+      0.15,
+    );
+    if (seam) {
+      tl.to(seam, { autoAlpha: 0, duration: 0.35, ease: "none" }, 0.55);
+    }
+
+    // 3. Courte résistance, puis les portes lourdes s'ouvrent en 3D
+    tl.to(
+      leftDoor,
+      { rotationY: 98, duration: 3.4, ease: "power3.inOut" },
+      1.0,
+    );
+    tl.to(
+      rightDoor,
+      { rotationY: -98, duration: 3.4, ease: "power3.inOut" },
+      1.0,
+    );
+
+    // Les faces des battants s'assombrissent en s'éloignant de la lumière
+    tl.to(shades, { opacity: 0.75, duration: 3.2, ease: "power2.in" }, 1.2);
+
+    // La lumière inonde la scène
+    tl.to(
+      glow,
+      { autoAlpha: 1, scaleX: 1.6, duration: 1.6, ease: "power2.out" },
+      1.2,
+    );
+
+    // Travelling avant : la caméra avance dans l'entrée
+    tl.to(stage, { scale: 1.12, duration: 3.8, ease: "power2.inOut" }, 1.0);
+
+    // Le portfolio prend sa place derrière
+    if (page) {
+      tl.to(page, { scale: 1, duration: 3.6, ease: "power2.out" }, 1.2);
+    }
+
+    // 4. La lumière retombe, le calque disparaît
+    tl.to(glow, { autoAlpha: 0, duration: 1.2, ease: "power2.inOut" }, 3.3);
+    tl.to(overlay, { autoAlpha: 0, duration: 0.6, ease: "none" }, 4.2);
+  };
+
+  const onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openDoors();
+    }
+  };
+
+  // ---------- État initial du portfolio (léger zoom, avant l'ouverture) ----------
+
+  useLayoutEffect(() => {
+    if (phase === "closed" && pageRef.current) {
+      gsap.set(pageRef.current, { scale: 1.06, transformOrigin: "50% 45%" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Une fois ouvert : on retire toute transformation sur le portfolio
+  useEffect(() => {
+    if (phase === "open" && pageRef.current) {
+      gsap.set(pageRef.current, { clearProps: "transform,transformOrigin" });
+    }
+  }, [phase]);
+
+  // Si la fenêtre devient trop petite, on saute l'intro
+  useEffect(() => {
+    const mq = window.matchMedia(DESKTOP);
+    const onChange = () => {
+      if (!mq.matches) setPhase("open");
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  // ---------- Pas de scroll tant que les portes sont fermées ----------
+
+  useEffect(() => {
+    if (phase === "open") return;
+
+    const stop = (e: Event) => e.preventDefault();
+    const scrollKeys = new Set([
+      " ",
+      "PageDown",
+      "PageUp",
+      "ArrowDown",
+      "ArrowUp",
+      "Home",
+      "End",
+    ]);
+    const onKey = (e: KeyboardEvent) => {
+      if (scrollKeys.has(e.key)) e.preventDefault();
+    };
+    const keepTop = () => {
+      if (window.scrollY !== 0) window.scrollTo(0, 0);
+    };
+
+    window.scrollTo(0, 0);
+    window.addEventListener("wheel", stop, { passive: false });
+    window.addEventListener("touchmove", stop, { passive: false });
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("scroll", keepTop);
+
+    return () => {
+      window.removeEventListener("wheel", stop);
+      window.removeEventListener("touchmove", stop);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", keepTop);
+    };
+  }, [phase]);
+
+  useEffect(() => {
+    return () => {
+      timelineRef.current?.kill();
+    };
   }, []);
 
   return (
-    <div className="ip-bleed" ref={bleedRef}>
+    <>
       {/* Lecteur YouTube invisible */}
       <iframe
         ref={musicRef}
@@ -284,18 +329,24 @@ export default function PortfolioEntrance({
         referrerPolicy="strict-origin-when-cross-origin"
       />
 
-      <div className="ip-track" ref={trackRef}>
-        <section
-          className="ip"
-          ref={rootRef}
-          aria-label="Introduction au portfolio"
+      {/* Le portfolio, visible dès que les portes s'écartent */}
+      <div className="ip-page" ref={pageRef}>
+        {children}
+      </div>
+
+      {/* Les portes : un clic pour ouvrir */}
+      {phase !== "open" && (
+        <div
+          ref={overlayRef}
+          className={`ip${phase === "opening" ? " is-opening" : ""}`}
+          role="button"
+          tabIndex={0}
+          aria-label="Ouvrir les portes pour découvrir le portfolio"
+          onClick={openDoors}
+          onKeyDown={onKeyDown}
         >
-          <div className="ip-wall" />
-
-          <div className="ip-content">{children}</div>
-
-          <div className="ip-stage">
-            <div className="ip-hall-light" />
+          <div className="ip-stage" ref={stageRef}>
+            <div className="ip-hall-light" ref={glowRef} />
 
             <DoorPanel side="left" doorRef={leftDoorRef} />
             <DoorPanel side="right" doorRef={rightDoorRef} />
@@ -331,12 +382,12 @@ export default function PortfolioEntrance({
             </div>
 
             <p className="ip-scroll-hint">
-              <span>Faites défiler pour ouvrir les portes</span>
+              <span>Appuyez sur la porte pour l'ouvrir</span>
               <i>↓</i>
             </p>
           </div>
-        </section>
-      </div>
+        </div>
+      )}
 
       {/* Bouton musique après ouverture */}
       {doorsOpen && (
@@ -347,14 +398,12 @@ export default function PortfolioEntrance({
           aria-label={musicPlaying ? "Couper la musique" : "Activer la musique"}
           title={musicPlaying ? "Couper la musique" : "Activer la musique"}
         >
-          <span className="ip-music-icon">
-            {musicPlaying ? "♫" : "♪"}
-          </span>
+          <span className="ip-music-icon">{musicPlaying ? "♫" : "♪"}</span>
           <span className="ip-music-label">
             {musicPlaying ? "Musique activée" : "Musique désactivée"}
           </span>
         </button>
       )}
-    </div>
+    </>
   );
 }
