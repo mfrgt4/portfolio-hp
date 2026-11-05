@@ -1,3 +1,4 @@
+
 import { FormEvent, useEffect, useRef, useState } from "react";
 import WordSphere from "./WordSphere";
 import ProjectModal from "./ProjectModal";
@@ -13,6 +14,7 @@ import {
 import type { Genre, Project } from "./data";
 import PortfolioEntrance from "./components/PortfolioEntrance";
 import HomeLetter from "./components/HomeLetter";
+import AboutHogwarts from "./components/AboutHogwarts";
 
 // ================= SONS =================
 const buttonSound = new Audio("/sounds/Click-buttons.mp3");
@@ -606,91 +608,8 @@ export default function App() {
         <HomeLetter />
       </PortfolioEntrance>
 
-      <section id="a-propos" className="hogwarts-about">
-        <div className="about">
-          <div className="rv rv-l hogwarts-about-content" style={delay(0.15)}>
-            <p className="tag mono">// archives de poudlard · dossier n° 001</p>
-
-            <div className="hogwarts-section-title">
-              <span className="hogwarts-eyebrow">Présentation de l'élève</span>
-              <h2>Un peu plus sur moi.</h2>
-              <span className="hogwarts-title-line" />
-            </div>
-
-            <p className="about-p">
-              Hello ! Moi, c’est Manon, étudiante en BUT MMI, parcours Création
-              Numérique. Je m’intéresse particulièrement au design graphique, à
-              l’UI/UX design et à l’audiovisuel. J’aime explorer les univers
-              visuels, imaginer des interfaces et donner vie à mes idées à
-              travers des projets créatifs.
-            </p>
-
-            <p className="about-p">
-              En dehors des cours, je réalise des projets personnels en design
-              graphique et montage vidéo pour explorer ma créativité et
-              continuer à apprendre.
-            </p>
-
-            <p className="about-p">
-              Je cherche un stage à partir d'avril 2027 pour progresser au sein
-              d'une équipe, et y apporter ma curiosité et mon sens du détail.
-            </p>
-
-            <div className="hogwarts-student-details">
-              <div className="hogwarts-detail">
-                <span className="detail-label">Localisation</span>
-                <span className="detail-value">Lyon</span>
-              </div>
-
-              <div className="hogwarts-detail">
-                <span className="detail-label">Formation</span>
-                <span className="detail-value">BUT MMI · 2e année</span>
-              </div>
-
-              <div className="hogwarts-detail">
-                <span className="detail-label">Disponibilité</span>
-                <span className="detail-value">Stage · Avril 2027</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="photo rv rv-r hogwarts-photo">
-            <div className="p-tilt" data-tilt="11" data-persp="none">
-              <span className="p-outline" aria-hidden="true" />
-
-              <div className="p-frame">
-                {profile.photo ? (
-                  <img
-                    src={profile.photo}
-                    alt={`Portrait de ${profile.name}`}
-                  />
-                ) : (
-                  <div className="photo-ph mono">
-                    <span>
-                      {profile.name
-                        .split(" ")
-                        .map((w) => w[0])
-                        .join("")}
-                    </span>
-                    <small>ta photo ici</small>
-                  </div>
-                )}
-
-                <span className="p-sheen" aria-hidden="true" />
-                <span className="p-glare" aria-hidden="true" />
-              </div>
-
-              <span className="p-tag" aria-hidden="true">
-                Élève de Poudlard
-              </span>
-            </div>
-
-            <div className="hogwarts-photo-caption">
-              <span>MINISTÈRE DE LA MAGIE</span>
-              <span>IDENTIFICATION · 001</span>
-            </div>
-          </div>
-        </div>
+      <section id="a-propos">
+        <AboutHogwarts />
       </section>
 
       <section id="competences">
