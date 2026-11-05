@@ -164,14 +164,15 @@ section#a-propos.ab .rv.in #ab-title::after {
 .ab-card {
   position: relative;
   width: 100%;
-  max-width: 1250px;
+  max-width: none;
+  margin: 0;
   padding: clamp(30px, 4vw, 48px);
 
   color: var(--ab-text);
   background:
     radial-gradient(
       ellipse at 50% 0%,
-      rgba(197, 166, 107, 0.1),
+      rgba(197, 166, 107, 0.10),
       transparent 60%
     ),
     linear-gradient(145deg, #292220, #1d1918 70%);
@@ -627,7 +628,7 @@ section#a-propos.ab .rv.in #ab-title::after {
   justify-content: space-between;
   gap: 20px;
 
-  width: min(100%, 1250px);
+  width: 100%;
   padding: 0 4px;
 
   color: #9a8669;
