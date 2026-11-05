@@ -854,3 +854,23 @@ section#a-propos.ab .rv.in #ab-title::after {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* FORCER LA CARTE À PRENDRE TOUTE LA LARGEUR */
+
+section#a-propos.ab {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+section#a-propos.ab .ab-inner {
+  width: 100% !important;
+  max-width: none !important;
+  align-items: stretch !important;
+}
+
+section#a-propos.ab .ab-card {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+}
