@@ -29,24 +29,16 @@ export default function AboutHogwarts() {
         <div className="ab-heading rv rv-l" style={delay(0.1)}>
           <p className="ab-kicker">
             <span />
-            Archives de Poudlard
+            Carte d'étudiant
             <span />
           </p>
 
           <h2 id="ab-title">Un peu plus sur moi.</h2>
-
-          <p className="ab-intro">
-            Derrière chaque projet, une personnalité, des idées et une
-            bonne dose de créativité.
-          </p>
         </div>
 
         <article className="ab-card rv rv-r" style={delay(0.25)}>
           <div className="ab-card-top">
             <div className="ab-school-mark">
-              <HogwartsStar />
-              <span>HOGWARTS</span>
-              <small>SCHOOL OF WITCHCRAFT</small>
             </div>
 
             <div className="ab-card-number">

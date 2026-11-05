@@ -24,13 +24,17 @@ section#a-propos.ab {
   padding: clamp(100px, 13vh, 150px) 20px;
   overflow: hidden;
 
-  background: #f3eee5 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 
 /* Suppression des anciens fonds décoratifs */
 section#a-propos.ab::before,
 section#a-propos.ab::after {
   content: none !important;
+  display: none !important;
 }
 
 .ab *,
@@ -46,12 +50,16 @@ section#a-propos.ab::after {
 .ab-inner {
   position: relative;
   z-index: 1;
-  width: min(100%, 1100px);
+  width: min(100%, 1350px);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: clamp(35px, 5vw, 55px);
+
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 /* =========================================================
@@ -63,9 +71,12 @@ section#a-propos.ab::after {
   max-width: 700px;
   margin: 0 auto;
   text-align: center;
+
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
-/* Catégorie : aucun fond, aucune bordure */
+/* Catégorie */
 section#a-propos.ab .ab-kicker {
   display: flex;
   align-items: center;
@@ -155,8 +166,9 @@ section#a-propos.ab .rv.in #ab-title::after {
 
 .ab-card {
   position: relative;
-  width: min(100%, 900px);
-  padding: clamp(25px, 4vw, 42px);
+  width: 100%;
+  max-width: 1250px;
+  padding: clamp(30px, 4vw, 48px);
 
   color: var(--ab-text);
   background:
@@ -209,31 +221,17 @@ section#a-propos.ab .rv.in #ab-title::after {
 
 .ab-school-mark {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
 
   color: var(--ab-gold-light);
-  text-align: center;
 }
 
 .ab-school-mark svg {
-  width: 29px;
-  height: 29px;
-  margin-bottom: 3px;
-}
-
-.ab-school-mark span {
-  font-family: "IM Fell English", Georgia, serif;
-  font-size: 19px;
-  letter-spacing: 0.17em;
-}
-
-.ab-school-mark small {
-  color: var(--ab-muted);
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 9px;
-  letter-spacing: 0.2em;
+  display: block;
+  width: 34px;
+  height: 34px;
+  margin: 0;
 }
 
 .ab-card-number {
@@ -263,11 +261,11 @@ section#a-propos.ab .rv.in #ab-title::after {
 
 .ab-card-main {
   display: grid;
-  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.5fr);
+  grid-template-columns: minmax(240px, 0.75fr) minmax(0, 2fr);
   align-items: center;
-  gap: clamp(30px, 5vw, 60px);
+  gap: clamp(40px, 6vw, 90px);
 
-  padding: clamp(30px, 4vw, 45px) 0;
+  padding: clamp(35px, 4vw, 50px) 0;
 }
 
 /* =========================================================
@@ -284,7 +282,7 @@ section#a-propos.ab .rv.in #ab-title::after {
 
 .ab-photo-frame {
   position: relative;
-  width: min(100%, 230px);
+  width: min(100%, 260px);
   aspect-ratio: 4 / 5;
   padding: 8px;
 
@@ -358,7 +356,7 @@ section#a-propos.ab .rv.in #ab-title::after {
   text-align: center;
 }
 
-/* Sceau de Poudlard */
+/* Sceau */
 .ab-student-seal {
   position: absolute;
   right: 0;
@@ -545,13 +543,16 @@ section#a-propos.ab .rv.in #ab-title::after {
   justify-content: space-between;
   gap: 20px;
 
-  width: min(100%, 900px);
+  width: min(100%, 1250px);
   padding: 0 4px;
 
   color: #9a8669;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: 10px;
   letter-spacing: 0.18em;
+
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 /* =========================================================
@@ -612,18 +613,18 @@ section#a-propos.ab .rv.in #ab-title::after {
    TABLETTE
    ========================================================= */
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   section#a-propos.ab {
     padding: 90px 22px;
   }
 
   .ab-card-main {
-    grid-template-columns: 190px minmax(0, 1fr);
-    gap: 28px;
+    grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.5fr);
+    gap: 35px;
   }
 
   .ab-photo-frame {
-    width: 185px;
+    width: min(100%, 220px);
   }
 
   .ab-information p {
@@ -666,8 +667,9 @@ section#a-propos.ab .rv.in #ab-title::after {
     padding-bottom: 17px;
   }
 
-  .ab-school-mark span {
-    font-size: 16px;
+  .ab-school-mark svg {
+    width: 29px;
+    height: 29px;
   }
 
   .ab-card-number span {
@@ -737,10 +739,6 @@ section#a-propos.ab .rv.in #ab-title::after {
 @media (max-width: 360px) {
   .ab-card {
     padding: 20px 14px;
-  }
-
-  .ab-school-mark small {
-    font-size: 8px;
   }
 
   .ab-photo-frame {
