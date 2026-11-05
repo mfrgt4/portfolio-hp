@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties, type Ref } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type Ref } from "react";
 import { profile } from "../data";
 import "./HomeLetter.css";
 
@@ -33,6 +33,26 @@ const MOTES = Array.from({ length: 16 }, (_, i) => ({
   duration: 15 + (i % 5) * 3,
   drift: ((i % 7) - 3) * 22,
 }));
+
+// Image de l'enveloppe (dossier public/images/). BASE_URL gère les sous-dossiers de déploiement.
+const ENVELOPE_SRC = `${import.meta.env.BASE_URL}images/enveloppe-HP.jpg`;
+
+// Étincelles autour de l'enveloppe : position, taille, rythme, et direction de l'explosion à l'ouverture
+const SPARKS = [
+  { x: -3, y: 14, s: 13, dl: 0.0, t: 3.4, bx: -90, by: -70 },
+  { x: 8, y: -7, s: 9, dl: -1.1, t: 4.0, bx: -50, by: -110 },
+  { x: 27, y: -11, s: 14, dl: -2.2, t: 3.1, bx: -20, by: -130 },
+  { x: 52, y: -9, s: 8, dl: -0.6, t: 3.8, bx: 10, by: -125 },
+  { x: 74, y: -12, s: 15, dl: -1.7, t: 3.3, bx: 40, by: -120 },
+  { x: 93, y: -4, s: 10, dl: -2.8, t: 4.2, bx: 90, by: -90 },
+  { x: 103, y: 22, s: 14, dl: -0.9, t: 3.6, bx: 120, by: -40 },
+  { x: 101, y: 62, s: 9, dl: -2.4, t: 3.0, bx: 120, by: 30 },
+  { x: 96, y: 98, s: 13, dl: -1.4, t: 3.9, bx: 95, by: 85 },
+  { x: 66, y: 107, s: 9, dl: -3.1, t: 3.5, bx: 40, by: 120 },
+  { x: 34, y: 106, s: 14, dl: -0.3, t: 4.1, bx: -30, by: 120 },
+  { x: 4, y: 100, s: 10, dl: -2.0, t: 3.2, bx: -95, by: 80 },
+  { x: -5, y: 58, s: 12, dl: -1.0, t: 3.7, bx: -120, by: 20 },
+];
 
 const d = (seconds: number) =>
   ({ "--hl-d": `${seconds}s` }) as CSSProperties;
@@ -230,13 +250,100 @@ function WaxSeal({
 }
 
 // ---------------------------------------------------------------------------
+// Enveloppe de secours (affichée seulement si l'image est introuvable)
+// ---------------------------------------------------------------------------
+function EnvelopeFallback() {
+  return (
+    <svg
+      className="hl-env-img hl-env-img--fallback"
+      viewBox="0 0 520 340"
+      role="img"
+      aria-label="Enveloppe cachetée de cire"
+    >
+      <defs>
+        <linearGradient id="hl-env-paper" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#f3e8d2" />
+          <stop offset="1" stopColor="#dcc8a0" />
+        </linearGradient>
+        <radialGradient id="hl-env-wax" cx="38%" cy="30%" r="85%">
+          <stop offset="0" stopColor="#b43c4d" />
+          <stop offset=".5" stopColor="#7d2230" />
+          <stop offset="1" stopColor="#3e0c15" />
+        </radialGradient>
+      </defs>
+      <rect x="6" y="6" width="508" height="328" rx="6" fill="url(#hl-env-paper)" />
+      <path
+        d="M6 6 L260 190 L514 6"
+        fill="none"
+        stroke="rgba(110,75,35,.5)"
+        strokeWidth="2"
+      />
+      <path
+        d="M6 334 L210 160 M514 334 L310 160"
+        fill="none"
+        stroke="rgba(110,75,35,.35)"
+        strokeWidth="1.5"
+      />
+      <path d={waxOutline(260, 190, 38)} fill="url(#hl-env-wax)" />
+      <text
+        x="260"
+        y="204"
+        textAnchor="middle"
+        fontSize="40"
+        fill="#5c1421"
+        fontFamily="'IM Fell English',serif"
+      >
+        M
+      </text>
+    </svg>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Section d'accueil : la lettre d'admission
 // ---------------------------------------------------------------------------
 export default function HomeLetter() {
   const sectionRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<number | undefined>(undefined);
   const tiltRef = useRef<HTMLElement>(null);
   const sealRef = useRef<HTMLDivElement>(null);
   const lightRef = useRef<SVGFEPointLightElement>(null);
+
+  const [state, setState] = useState<"closed" | "opening" | "open">("closed");
+  const [imgFailed, setImgFailed] = useState(false);
+
+  // Clic sur l'enveloppe : la lettre en sort, l'enveloppe s'éclipse
+  const openEnvelope = () => {
+    if (state !== "closed") return;
+
+    const section = sectionRef.current;
+    const stage = stageRef.current;
+
+    // Calcule d'où la lettre doit partir : le centre de l'enveloppe
+    if (section && stage) {
+      const cs = getComputedStyle(section);
+      const pt = parseFloat(cs.paddingTop) || 0;
+      const pb = parseFloat(cs.paddingBottom) || 0;
+      const h = stage.offsetHeight;
+      const finalHeight = Math.max(window.innerHeight, h + pt + pb);
+      const finalTop = pt + (finalHeight - pt - pb - h) / 2;
+      const fy = window.innerHeight / 2 - (finalTop + h / 2);
+      section.style.setProperty("--hl-fy", `${fy.toFixed(1)}px`);
+    }
+
+    setState("opening");
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    timerRef.current = window.setTimeout(
+      () => setState("open"),
+      reduce ? 0 : 3800,
+    );
+  };
+
+  useEffect(() => {
+    return () => window.clearTimeout(timerRef.current);
+  }, []);
 
   // Légère inclinaison de la lettre + lumière du sceau qui suit le curseur
   useEffect(() => {
@@ -308,6 +415,7 @@ export default function HomeLetter() {
     <section
       id="accueil"
       className="hl"
+      data-state={state}
       ref={sectionRef}
       aria-label="Lettre d’invitation au portfolio"
     >
@@ -377,7 +485,63 @@ export default function HomeLetter() {
         </defs>
       </svg>
 
-      <div className="hl-stage">
+      {/* L'enveloppe : seule visible tant qu'elle n'est pas ouverte */}
+      {state !== "open" && (
+        <div className="hl-envelope-wrap">
+          <button
+            type="button"
+            className="hl-envelope"
+            onClick={openEnvelope}
+            aria-label="Ouvrir l’enveloppe pour découvrir la lettre"
+          >
+            <span className="hl-env-glow" aria-hidden="true" />
+
+            {imgFailed ? (
+              <EnvelopeFallback />
+            ) : (
+              <img
+                className="hl-env-img"
+                src={ENVELOPE_SRC}
+                alt="Enveloppe de Poudlard fermée par un sceau de cire"
+                draggable={false}
+                onError={() => setImgFailed(true)}
+              />
+            )}
+
+            <span className="hl-env-shine" aria-hidden="true" />
+
+            <span className="hl-env-sparks" aria-hidden="true">
+              {SPARKS.map((p, i) => (
+                <i
+                  key={i}
+                  style={
+                    {
+                      "--x": `${p.x}%`,
+                      "--y": `${p.y}%`,
+                      "--s": `${p.s}px`,
+                      "--dl": `${p.dl}s`,
+                      "--t": `${p.t}s`,
+                      "--bx": `${p.bx}px`,
+                      "--by": `${p.by}px`,
+                      "--bd": `${(i % 4) * 0.06}s`,
+                    } as CSSProperties
+                  }
+                />
+              ))}
+            </span>
+          </button>
+
+          <p className="hl-env-hint">
+            <span className="hl-env-arrow" aria-hidden="true">
+              ↑
+            </span>
+            Une lettre vous est adressée… elle n’attend qu’à être ouverte.
+            <strong>Appuyez sur l’enveloppe</strong>
+          </p>
+        </div>
+      )}
+
+      <div className="hl-stage" ref={stageRef}>
         <article className="hl-tilt" ref={tiltRef} aria-labelledby="hl-title">
           <div className="hl-sheet">
             <div className="hl-paper" aria-hidden="true" />
@@ -417,13 +581,14 @@ export default function HomeLetter() {
 
                 <p className="hl-p hl-ink" style={d(1.75)}>
                   J'ai le plaisir de vous inviter à découvrir mon univers
-                  créatif ! Je suis<strong className="hl-name">{profile.name}</strong>,
+                  créatif ! Je suis{" "}
+                  <strong className="hl-name">{profile.name}</strong>,
                   étudiante en deuxième année de BUT MMI à l’Université Clermont Auvergne, au Puy-en-Velay.
                 </p>
 
                 <p className="hl-p hl-ink" style={d(1.95)}>
                   Entre design graphique, communication visuelle, UI/UX design et
-                  création numérique, elle aime imaginer et donner vie à des
+                  création numérique, j’aime imaginer et donner vie à des
                   projets qui racontent une histoire.
                 </p>
 

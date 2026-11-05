@@ -565,49 +565,443 @@ section#accueil.hl::after {
 }
 
 /* =========================================================
-   ANIMATIONS D'ARRIVÉE
-   Déclenchées par data-play (posé par PortfolioEntrance) ;
-   sans ce parent, tout reste simplement visible.
-   --hl-base = délai de départ (la lettre apparaît pendant
-   que les portes s'ouvrent).
+   L'ENVELOPPE (état fermé)
+   Seule l'image est visible ; la lettre est cachée derrière.
    ========================================================= */
 
+/* Tant que l'enveloppe est fermée, la section tient dans l'écran */
+section#accueil.hl[data-state="closed"] {
+  height: 100vh;
+  height: 100svh;
+}
+
+.hl[data-state="closed"] .hl-stage {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hl-envelope-wrap {
+  position: absolute;
+  top: 50vh;
+  top: 50svh;
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(22px, 3.6vh, 36px);
+  width: min(86vw, 560px);
+  translate: -50% -50%;
+}
+
+/* Apparition de l'enveloppe quand les portes s'ouvrent */
 .ip-page[data-intro="true"] {
   --hl-base: 1.9s;
 }
 
-.ip-page[data-play="false"] .hl-sheet,
-.ip-page[data-play="false"] .hl-ink,
-.ip-page[data-play="false"] .hl-stamp {
+.ip-page[data-play="false"] .hl-envelope-wrap {
   opacity: 0;
 }
 
-/* La lettre se déroule */
-.ip-page[data-play="true"] .hl-sheet {
-  animation: hl-unroll 1.9s cubic-bezier(0.3, 0.6, 0.2, 1) var(--hl-base, 0.1s)
-    both;
+.ip-page[data-play="true"] .hl-envelope-wrap {
+  animation: hl-env-in 1.6s cubic-bezier(0.2, 0.8, 0.2, 1)
+    var(--hl-base, 0.1s) both;
 }
 
-@keyframes hl-unroll {
+@keyframes hl-env-in {
   from {
     opacity: 0;
-    transform: translateY(26px) scale(0.985);
-    clip-path: inset(-60px -80px 100% -80px);
-  }
-  10% {
-    opacity: 1;
+    transform: translateY(40px) scale(0.9);
+    filter: blur(6px);
   }
   to {
     opacity: 1;
     transform: none;
-    clip-path: inset(-60px -80px -140px -80px);
+    filter: none;
   }
 }
 
+.hl-envelope {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+
+  animation: hl-env-float 6.5s ease-in-out infinite;
+  transition: scale 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hl-envelope:hover {
+  scale: 1.035;
+}
+
+.hl-envelope:active {
+  scale: 0.985;
+}
+
+.hl-envelope:focus-visible {
+  outline: 2px solid var(--hl-gold-light);
+  outline-offset: 10px;
+}
+
+/* Lévitation douce */
+@keyframes hl-env-float {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -0.8deg;
+  }
+  50% {
+    translate: 0 -14px;
+    rotate: 1deg;
+  }
+}
+
+.hl-env-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow:
+    0 34px 54px -16px rgba(0, 0, 0, 0.8),
+    0 10px 18px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: filter 0.5s ease;
+}
+
+.hl-envelope:hover .hl-env-img {
+  filter: brightness(1.08);
+}
+
+/* Halo doré qui pulse derrière l'enveloppe */
+.hl-env-glow {
+  position: absolute;
+  inset: -16% -12%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 200, 120, 0.42),
+    rgba(255, 170, 80, 0.14) 46%,
+    transparent 70%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+  animation: hl-env-pulse 3.6s ease-in-out infinite;
+}
+
+@keyframes hl-env-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    scale: 1;
+  }
+  50% {
+    opacity: 0.95;
+    scale: 1.07;
+  }
+}
+
+/* Reflet qui balaie l'enveloppe */
+.hl-env-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 4px;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    rgba(255, 240, 205, 0.24) 48%,
+    transparent 58%
+  );
+  background-size: 260% 100%;
+  background-position: 140% 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: hl-env-shine 6s ease-in-out 1s infinite;
+}
+
+@keyframes hl-env-shine {
+  0%,
+  45% {
+    background-position: 140% 0;
+  }
+  80%,
+  100% {
+    background-position: -40% 0;
+  }
+}
+
+/* Étincelles magiques */
+.hl-env-sparks {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(255, 205, 120, 0.85));
+}
+
+.hl-env-sparks i {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  background: radial-gradient(circle, #fff6d4 0 30%, #f3dc9d 55%, #c9a35f 100%);
+  clip-path: polygon(
+    50% 0,
+    61% 39%,
+    100% 50%,
+    61% 61%,
+    50% 100%,
+    39% 61%,
+    0 50%,
+    39% 39%
+  );
+  opacity: 0;
+  animation: hl-twinkle var(--t) ease-in-out var(--dl) infinite;
+}
+
+@keyframes hl-twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    scale: 0.4;
+    translate: 0 0;
+  }
+  40% {
+    opacity: 1;
+    scale: 1;
+    translate: 0 -6px;
+  }
+  70% {
+    opacity: 0.5;
+    scale: 0.7;
+    translate: 3px -13px;
+  }
+}
+
+/* Message sous l'enveloppe */
+.hl-env-hint {
+  margin: 0;
+  color: #e4d3ab;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(16px, 2vw, 19px);
+  font-style: italic;
+  line-height: 1.5;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.hl-env-arrow {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--hl-gold-light);
+  font-size: 22px;
+  font-style: normal;
+  line-height: 1;
+  animation: hl-arrow 1.8s ease-in-out infinite;
+}
+
+@keyframes hl-arrow {
+  0%,
+  100% {
+    translate: 0 0;
+    opacity: 0.6;
+  }
+  50% {
+    translate: 0 -7px;
+    opacity: 1;
+  }
+}
+
+.hl-env-hint strong {
+  display: block;
+  margin-top: 6px;
+  color: #f6e2ab;
+  font-family: "IM Fell English", "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(19px, 2.5vw, 24px);
+  font-style: italic;
+  font-weight: 400;
+  animation: hl-hint 2.8s ease-in-out infinite;
+}
+
+@keyframes hl-hint {
+  0%,
+  100% {
+    opacity: 0.7;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  }
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 16px rgba(255, 214, 140, 0.6),
+      0 2px 10px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* =========================================================
+   OUVERTURE : la lettre sort, l'enveloppe s'éclipse
+   (états "opening" puis "open" : mêmes animations, pas de redémarrage)
+   ========================================================= */
+
+/* L'enveloppe tremble, se soulève, puis glisse hors de l'écran */
+.hl[data-state="opening"] .hl-envelope,
+.hl[data-state="open"] .hl-envelope {
+  pointer-events: none;
+  animation: hl-env-open 3.6s cubic-bezier(0.45, 0.05, 0.3, 1) both;
+}
+
+@keyframes hl-env-open {
+  0% {
+    translate: 0 0;
+    rotate: 0deg;
+    scale: 1;
+    opacity: 1;
+  }
+  5% {
+    rotate: -3.5deg;
+    scale: 1.03;
+  }
+  10% {
+    rotate: 3.5deg;
+  }
+  15% {
+    rotate: -2.6deg;
+  }
+  20% {
+    rotate: 2deg;
+  }
+  25% {
+    rotate: -1deg;
+  }
+  30% {
+    translate: 0 0;
+    rotate: 0deg;
+    scale: 1.05;
+  }
+  40% {
+    translate: 0 -16px;
+    rotate: -2deg;
+    scale: 1.06;
+  }
+  62% {
+    translate: 0 -10px;
+    rotate: -1.5deg;
+    scale: 1.05;
+    opacity: 1;
+  }
+  100% {
+    translate: 0 80vh;
+    rotate: 10deg;
+    scale: 0.88;
+    opacity: 0;
+  }
+}
+
+/* Éclat de lumière */
+.hl[data-state="opening"] .hl-env-glow,
+.hl[data-state="open"] .hl-env-glow {
+  animation: hl-env-flash 2.2s ease-out both;
+}
+
+@keyframes hl-env-flash {
+  0% {
+    opacity: 0.6;
+    scale: 1;
+  }
+  30% {
+    opacity: 1;
+    scale: 1.45;
+  }
+  100% {
+    opacity: 0;
+    scale: 2.1;
+  }
+}
+
+/* Les étincelles explosent vers l'extérieur */
+.hl[data-state="opening"] .hl-env-sparks i,
+.hl[data-state="open"] .hl-env-sparks i {
+  animation: hl-burst 1.5s cubic-bezier(0.2, 0.7, 0.3, 1) var(--bd, 0s) both;
+}
+
+@keyframes hl-burst {
+  0% {
+    opacity: 0;
+    scale: 0.3;
+    translate: 0 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.6;
+    translate: var(--bx) var(--by);
+  }
+}
+
+.hl[data-state="opening"] .hl-env-hint,
+.hl[data-state="open"] .hl-env-hint {
+  animation: hl-hint-out 0.6s ease both;
+}
+
+@keyframes hl-hint-out {
+  to {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+
+/* La lettre sort de derrière l'enveloppe, puis prend sa place */
+.hl[data-state="opening"] .hl-stage,
+.hl[data-state="open"] .hl-stage {
+  animation: hl-pull 2.7s cubic-bezier(0.3, 0.7, 0.2, 1) 0.7s both;
+}
+
+@keyframes hl-pull {
+  0% {
+    opacity: 0;
+    translate: 0 var(--hl-fy, 0px);
+    scale: 0.42;
+  }
+  14% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+/* =========================================================
+   LA LETTRE SE REMPLIT (démarre à l'ouverture)
+   ========================================================= */
+
+.hl[data-state="opening"],
+.hl[data-state="open"] {
+  --hl-base: 1.9s;
+}
+
 /* L'encre apparaît */
-.ip-page[data-play="true"] .hl-ink {
-  animation: hl-ink 1s ease-out calc(var(--hl-base, 0.1s) + var(--hl-d, 0s))
-    both;
+.hl[data-state="opening"] .hl-ink,
+.hl[data-state="open"] .hl-ink {
+  animation: hl-ink 1s ease-out calc(var(--hl-base) + var(--hl-d, 0s)) both;
 }
 
 @keyframes hl-ink {
@@ -624,9 +1018,10 @@ section#accueil.hl::after {
 }
 
 /* Le flourish de la signature se trace */
-.ip-page[data-play="true"] .hl-flourish path {
+.hl[data-state="opening"] .hl-flourish path,
+.hl[data-state="open"] .hl-flourish path {
   animation: hl-draw 1.5s cubic-bezier(0.4, 0.1, 0.3, 1)
-    calc(var(--hl-base, 0.1s) + 3.1s) both;
+    calc(var(--hl-base) + 3.1s) both;
 }
 
 @keyframes hl-draw {
@@ -639,9 +1034,10 @@ section#accueil.hl::after {
 }
 
 /* Le sceau est pressé sur le papier */
-.ip-page[data-play="true"] .hl-stamp {
+.hl[data-state="opening"] .hl-stamp,
+.hl[data-state="open"] .hl-stamp {
   animation: hl-stamp 0.8s cubic-bezier(0.3, 1.2, 0.4, 1)
-    calc(var(--hl-base, 0.1s) + 3.2s) both;
+    calc(var(--hl-base) + 3.2s) both;
 }
 
 @keyframes hl-stamp {
@@ -675,6 +1071,10 @@ section#accueil.hl::after {
    ========================================================= */
 
 @media (max-width: 560px) {
+  .hl-envelope-wrap {
+    width: min(88vw, 420px);
+  }
+
   .hl-content {
     padding: 38px 24px 30px;
   }
@@ -710,7 +1110,8 @@ section#accueil.hl::after {
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .hl-mote {
+  .hl-mote,
+  .hl-env-sparks {
     display: none;
   }
 
