@@ -69,7 +69,7 @@ nav .in.mobile-open a{display:block;width:100%;padding:11px 13px;border-radius:9
 .folder-tab{position:absolute;z-index:3;top:19%;left:8%;width:37%;height:16%;border-radius:9px 9px 0 0;background:#8b1e2d}
 .folder-front{position:absolute;z-index:4;inset:32% 0 0;display:flex;align-items:flex-end;justify-content:space-between;padding:15px 17px;border:1px solid #641421;border-radius:5px 13px 13px 13px;background:linear-gradient(145deg,#b94b55,#8b1e2d);box-shadow:0 calc(13px + 8px*var(--k)) calc(25px + 6px*var(--k)) rgba(80,25,34,calc(.09 + .06*var(--k)));transform-origin:50% 100%;transform:perspective(700px) rotateX(calc(var(--k)*-20deg)) translateY(calc(var(--k)*5px))}
 .folder-emoji{color:#f4dfc5;font-size:clamp(1.5rem,3vw,2.3rem)}
-.folder-open{display:grid;width:30px;height:30px;place-items:center;border:1px solid #e2b3a0;border-radius:50%;color:#fff0df;opacity:var(--k);transform:translate(calc(-5px*(1 - var(--k))),calc(5px*(1 - var(--k)))}
+.folder-open{display:grid;width:30px;height:30px;place-items:center;border:1px solid #e2b3a0;border-radius:50%;color:#fff0df;opacity:var(--k);transform:translate(calc(-5px*(1 - var(--k))),calc(5px*(1 - var(--k))))}
 .folder-university .folder-back,.folder-university .folder-tab{background:#394a3b}
 .folder-university .folder-front{border-color:#29392d;background:linear-gradient(145deg,#667e60,#394a3b)}
 .folder-university .folder-emoji{color:#edf0df}
