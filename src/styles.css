@@ -200,3 +200,184 @@ html:has(.welcome-screen),body:has(.welcome-screen){overflow:hidden}
 #projets .genre-filters .genre-filter sup{color:inherit;font-size:10px;line-height:1;opacity:.85}
 #projets .genre-filters .genre-filter:focus-visible,#projets .subtabs .tabs.sub button:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
 @media(max-width:560px){#projets .genre-filters,#projets .subtabs .tabs.sub{gap:7px}#projets .genre-filters .genre-filter,#projets .subtabs .tabs.sub button{min-height:39px;padding:8px 12px;font-size:12px}}
+
+/* =========================================
+   HOGWARTS — SECTION À PROPOS
+   ========================================= */
+
+.hogwarts-about {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hogwarts-about::before {
+  content: "✦";
+  position: absolute;
+  top: 8%;
+  right: 8%;
+  color: rgba(184, 149, 82, 0.35);
+  font-size: 28px;
+  pointer-events: none;
+}
+
+.hogwarts-about .about {
+  position: relative;
+  align-items: center;
+  gap: clamp(45px, 8vw, 110px);
+}
+
+.hogwarts-about-content {
+  position: relative;
+  padding: 35px 0;
+}
+
+.hogwarts-about .tag {
+  color: var(--acc);
+  letter-spacing: 0.13em;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.hogwarts-section-title {
+  margin: 22px 0 30px;
+}
+
+.hogwarts-eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hogwarts-section-title h2 {
+  font-family: "Instrument Serif", serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--fg);
+}
+
+.hogwarts-title-line {
+  display: block;
+  width: 85px;
+  height: 1px;
+  margin-top: 22px;
+  background: linear-gradient(
+    90deg,
+    var(--gold),
+    rgba(184, 149, 82, 0)
+  );
+}
+
+.hogwarts-about .about-p {
+  max-width: 590px;
+  line-height: 1.9;
+  color: var(--mute);
+}
+
+.hogwarts-student-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 35px;
+  border-top: 1px solid rgba(184, 149, 82, 0.45);
+  border-bottom: 1px solid rgba(184, 149, 82, 0.45);
+}
+
+.hogwarts-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 18px 12px 18px 0;
+}
+
+.hogwarts-detail + .hogwarts-detail {
+  padding-left: 16px;
+  border-left: 1px solid rgba(184, 149, 82, 0.35);
+}
+
+.detail-label {
+  color: var(--gold);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.detail-value {
+  color: var(--fg);
+  font-family: "Instrument Serif", serif;
+  font-size: 1.1rem;
+}
+
+.hogwarts-photo {
+  position: relative;
+}
+
+.hogwarts-photo .p-frame {
+  border: 8px solid #493329;
+  outline: 1px solid var(--gold);
+  outline-offset: 5px;
+  border-radius: 2px;
+  background: #493329;
+  box-shadow:
+    0 20px 55px rgba(43, 23, 24, 0.25),
+    inset 0 0 0 1px rgba(224, 190, 119, 0.45);
+}
+
+.hogwarts-photo .p-tag {
+  right: -20px;
+  bottom: 25px;
+  padding: 11px 19px;
+  border: 1px solid rgba(184, 149, 82, 0.8);
+  border-radius: 2px;
+  background: #641522;
+  color: #f3e9d8;
+  font-family: "Instrument Serif", serif;
+  font-size: 1.1rem;
+  transform: rotate(-5deg);
+}
+
+.hogwarts-photo-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  color: var(--mute);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.13em;
+}
+
+@media (max-width: 700px) {
+  .hogwarts-about .about {
+    gap: 35px;
+  }
+
+  .hogwarts-about-content {
+    padding: 10px 0;
+  }
+
+  .hogwarts-student-details {
+    grid-template-columns: 1fr;
+  }
+
+  .hogwarts-detail {
+    padding: 13px 0;
+  }
+
+  .hogwarts-detail + .hogwarts-detail {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid rgba(184, 149, 82, 0.25);
+  }
+
+  .hogwarts-photo .p-tag {
+    right: -8px;
+  }
+}

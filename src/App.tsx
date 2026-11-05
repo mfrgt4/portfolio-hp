@@ -1,4 +1,3 @@
-
 import { FormEvent, useEffect, useRef, useState } from "react";
 import WordSphere from "./WordSphere";
 import ProjectModal from "./ProjectModal";
@@ -607,11 +606,16 @@ export default function App() {
         <HomeLetter />
       </PortfolioEntrance>
 
-      <section id="a-propos">
+      <section id="a-propos" className="hogwarts-about">
         <div className="about">
-          <div className="rv rv-l" style={delay(0.15)}>
-            <p className="tag mono">// qui suis-je ?</p>
-            <h2>Un peu plus sur moi.</h2>
+          <div className="rv rv-l hogwarts-about-content" style={delay(0.15)}>
+            <p className="tag mono">// archives de poudlard · dossier n° 001</p>
+
+            <div className="hogwarts-section-title">
+              <span className="hogwarts-eyebrow">Présentation de l'élève</span>
+              <h2>Un peu plus sur moi.</h2>
+              <span className="hogwarts-title-line" />
+            </div>
 
             <p className="about-p">
               Hello ! Moi, c’est Manon, étudiante en BUT MMI, parcours Création
@@ -632,16 +636,28 @@ export default function App() {
               d'une équipe, et y apporter ma curiosité et mon sens du détail.
             </p>
 
-            <div className="chips about-facts">
-              <i className="mono">📍 Lyon</i>
-              <i className="mono">🎓 BUT MMI · 2e année</i>
-              <i className="mono">🗓️ Stage avril 2027</i>
+            <div className="hogwarts-student-details">
+              <div className="hogwarts-detail">
+                <span className="detail-label">Localisation</span>
+                <span className="detail-value">Lyon</span>
+              </div>
+
+              <div className="hogwarts-detail">
+                <span className="detail-label">Formation</span>
+                <span className="detail-value">BUT MMI · 2e année</span>
+              </div>
+
+              <div className="hogwarts-detail">
+                <span className="detail-label">Disponibilité</span>
+                <span className="detail-value">Stage · Avril 2027</span>
+              </div>
             </div>
           </div>
 
-          <div className="photo rv rv-r">
+          <div className="photo rv rv-r hogwarts-photo">
             <div className="p-tilt" data-tilt="11" data-persp="none">
               <span className="p-outline" aria-hidden="true" />
+
               <div className="p-frame">
                 {profile.photo ? (
                   <img
@@ -659,12 +675,19 @@ export default function App() {
                     <small>ta photo ici</small>
                   </div>
                 )}
+
                 <span className="p-sheen" aria-hidden="true" />
                 <span className="p-glare" aria-hidden="true" />
               </div>
+
               <span className="p-tag" aria-hidden="true">
-                hello !
+                Élève de Poudlard
               </span>
+            </div>
+
+            <div className="hogwarts-photo-caption">
+              <span>MINISTÈRE DE LA MAGIE</span>
+              <span>IDENTIFICATION · 001</span>
             </div>
           </div>
         </div>
